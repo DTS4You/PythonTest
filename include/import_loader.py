@@ -1,8 +1,7 @@
-# Main Program
-from include.import_loader import mod_loader
+def mod_loader():
+    print("Test")
 
 def main():
-    print("Hello World!")
     mod_loader()
 
 
