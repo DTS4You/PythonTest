@@ -1,9 +1,9 @@
 # Main Program
-import lib.module_loader as mod_loader
+from module_loader import mod_loader 
 
 def main():
     print("Hello World!!!!")
-    #mod_loader()
+    mod_loader()
 
 
 #------------------------------------------------------------------------------
