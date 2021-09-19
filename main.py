@@ -1,5 +1,5 @@
 # Main Program
-#from include.module_loader import mod_loader
+import lib.module_loader as mod_loader
 
 def main():
     print("Hello World!!!!")
