@@ -1,15 +1,17 @@
-# Main Program
-from module_loader import mod_loader 
-import module_serial
+# Module Serial
+import machine
 
-
+debug = False
 
 def main():
-    print("Hello World!!!!")
-    mod_loader()
+    if debug:
+        print("Test")
 
+    uart = machine.UART(0)
+    if debug:
+        print(uart)
 
-
+    uart.write("Hello\n")
 
 
 #------------------------------------------------------------------------------
