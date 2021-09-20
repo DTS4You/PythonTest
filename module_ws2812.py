@@ -2,6 +2,14 @@ import time
 from neopixel import Neopixel
 
 
+class Ledsegment:
+
+    def __init__(self, neopixel, start, number):
+        self.neopixel = neopixel
+        self.start = start
+        self.stop = self.start + number
+        print("Hallo")
+
 
 
 def main():
