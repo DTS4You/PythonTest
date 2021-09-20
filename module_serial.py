@@ -3,15 +3,24 @@ import machine
 
 debug = False
 
-def main():
-    if debug:
-        print("Test")
+def serial_init():
 
+    global uart
+    
     uart = machine.UART(0)
-    if debug:
-        print(uart)
 
-    uart.write("Hello\n")
+
+def serial_write():
+
+    uart.write("Hello22\n")
+
+
+def main():
+    
+    serial_init()
+
+    serial_write()
+    
 
 
 #------------------------------------------------------------------------------
