@@ -4,11 +4,43 @@ from neopixel import Neopixel
 
 class Ledsegment:
 
-    def __init__(self, neopixel, start, number):
+    def __init__(self, neopixel, start, count):
         self.neopixel = neopixel
         self.start = start
-        self.stop = self.start + number
-        print("Hallo")
+        self.stop = self.start + count - 1
+        self.count = count
+        self.color_on = (0,0,0)
+        self.color_default = (0,0,0)
+        self.color_off = (0,0,0)
+        self.color_show = (0,0,0)
+    
+
+    def set_color_on(self, color_on):
+        self.color_on = color_on
+
+    def set_default(self, color_default):
+        self.color_default = color_default
+        
+    def set_color_off(self, color_off):
+        self.color_off = color_off
+
+    def show_on(self):
+        self.color_show = self.color_on
+        self.set_pixel()
+
+    def show_def(self):
+        self.color_show = self.color_default
+        self.set_pixel()
+
+    def show_off(self):
+        self.color_show = self.color_off
+        self.set_pixel()
+
+    def set_pixel(self):
+        self.neopixel.set_pixel_line(self.start, self.stop, self.color_show)
+
+    def show_stripe(self):
+        self.neopixel.show()
 
 
 
@@ -16,6 +48,8 @@ def main():
     numpix = 16
     strip_1 = Neopixel(numpix, 0, 2, "GRB")
     strip_2 = Neopixel(numpix, 1, 3, "GRB")
+
+    led_1 = Ledsegment(strip_1, 0, 1)
 
     red = (255, 0, 0)
     orange = (255, 165, 0)
@@ -34,8 +68,8 @@ def main():
     colors_rgbw.append((0, 0, 0, 255))
 
     # uncomment colors_rgb if you have RGB strip
-    # colors = colors_rgb
-    colors = colors_rgbw
+    colors = colors_rgb
+    #colors = colors_rgbw
 
     strip_1.brightness(20)
     strip_2.brightness(50)
@@ -43,15 +77,22 @@ def main():
     strip_2.set_pixel_line_gradient(0, 7, white, grey)
     strip_2.set_pixel_line_gradient(8, 15, grey, white)
 
+    strip_1.set_pixel_line(0, 10, orange)
+    strip_1.show()
+    strip_2.show()
 
+    led_1.set_color_off(black)
+    led_1.set_default(red)
+    led_1.set_color_on(white)
     while True:
-        for color in colors:
-            for i in range(numpix):
-                strip_1.set_pixel(i, color)
-                strip_2.rotate_right(1)
-                time.sleep(0.05)
-                strip_1.show()
-                strip_2.show()
+        led_1.show_on()
+        strip_1.show()
+        time.sleep(0.5)
+        led_1.show_off()
+        strip_1.show()
+        time.sleep(0.5)
+
+
 
 # End
 
