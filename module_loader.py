@@ -1,5 +1,5 @@
-import module_ws2812 as WS2812
-import time
+import module_ws2812
+
 
 def mod_loader():
     print("Start-Loader")
@@ -7,7 +7,7 @@ def mod_loader():
 
 
 def run_ws2812():
-    WS2812.test_function()
+    module_ws2812.test_function()
 
 
 
