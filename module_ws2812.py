@@ -44,7 +44,7 @@ class Ledsegment:
 
 
 
-def main():
+def test_function():
     numpix = 16
     strip_1 = Neopixel(numpix, 0, 2, "GRB")
     strip_2 = Neopixel(numpix, 1, 3, "GRB")
@@ -100,6 +100,8 @@ def main():
         strip_1.show()
         time.sleep(0.5)
 
+def main():
+    test_function()
 
 
 # End
