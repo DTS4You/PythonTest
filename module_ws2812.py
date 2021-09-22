@@ -50,6 +50,7 @@ def main():
     strip_2 = Neopixel(numpix, 1, 3, "GRB")
 
     led_1 = Ledsegment(strip_1, 0, 1)
+    led_2 = Ledsegment(strip_1, 1, 1)
 
     red = (255, 0, 0)
     orange = (255, 165, 0)
@@ -84,11 +85,18 @@ def main():
     led_1.set_color_off(black)
     led_1.set_default(red)
     led_1.set_color_on(white)
+
+    led_2.set_color_off(black)
+    led_2.set_default(red)
+    led_2.set_color_on(green)
+
     while True:
         led_1.show_on()
+        led_2.show_on()
         strip_1.show()
         time.sleep(0.5)
         led_1.show_off()
+        led_2.show_off()
         strip_1.show()
         time.sleep(0.5)
 
