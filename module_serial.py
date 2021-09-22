@@ -15,12 +15,16 @@ def serial_write():
     uart.write("Hello22\n")
 
 
-def main():
+def mod_serial():
     
     serial_init()
 
     serial_write()
     
+
+def main():
+    mod_serial()
+
 
 
 #------------------------------------------------------------------------------

@@ -7,7 +7,7 @@ def mod_loader():
 
 
 def run_ws2812():
-    module_ws2812.test_function()
+    module_ws2812.mod_ws2812()
 
 
 

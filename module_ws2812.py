@@ -44,7 +44,7 @@ class Ledsegment:
 
 
 
-def test_function():
+def mod_ws2812():
     numpix = 16
     strip_1 = Neopixel(numpix, 0, 2, "GRB")
     strip_2 = Neopixel(numpix, 1, 3, "GRB")
@@ -101,7 +101,7 @@ def test_function():
         time.sleep(0.5)
 
 def main():
-    test_function()
+    mod_ws2812()
 
 
 # End
