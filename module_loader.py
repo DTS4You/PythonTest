@@ -1,5 +1,5 @@
 def mod_loader():
-    print("Test")
+    print("Start-Loader")
 
 def main():
     mod_loader()
