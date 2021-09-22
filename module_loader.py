@@ -1,4 +1,4 @@
-import module_ws2812
+import module_ws2812 as WS2812
 
 
 def mod_loader():
@@ -7,7 +7,7 @@ def mod_loader():
 
 
 def run_ws2812():
-    module_ws2812.run_ws2812()
+    WS2812.run_ws2812()
 
 
 

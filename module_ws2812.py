@@ -94,11 +94,11 @@ def run_ws2812():
         led_1.show_on()
         led_2.show_on()
         strip_1.show()
-        time.sleep(0.5)
+        time.sleep(0.3)
         led_1.show_off()
         led_2.show_off()
         strip_1.show()
-        time.sleep(0.5)
+        time.sleep(0.3)
 
 def main():
     run_ws2812()
