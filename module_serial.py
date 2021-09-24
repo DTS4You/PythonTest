@@ -12,7 +12,7 @@ def serial_init():
 
 def serial_write():
 
-    uart.write("Hello22\n")
+    uart.write(45)
 
 
 def mod_serial():
