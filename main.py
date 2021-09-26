@@ -3,6 +3,7 @@ import machine
 import uasyncio
 import utime
 import module_ws2812
+import time
 
 # Settings
 #led = machine.Pin(25, machine.Pin.OUT)
@@ -75,6 +76,7 @@ async def main():
             
         #await wait_refresh()
         #print("Press Button")
+        time.sleep(2)
         
     
 # Start event loop and run entry point coroutine
