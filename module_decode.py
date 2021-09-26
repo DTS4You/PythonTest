@@ -4,23 +4,48 @@ class Decoder:
     def __init__(self):
         
         self.data = ""
+        self.array = []
 
     def send_data(self, data):
         self.data = data
+        self.data_split()
 
-    def get_result(self):
+    def data_split(self):
+        self.array = self.data.split(",")
+        self.cmd_decode()
+
+    def get_data(self):
         return self.data
+
+    def get_array(self):
+        return self.array
+
+    def cmd_decode(self):
+        if self.array[0] == "set":
+            print("Command -> Set")
+            if self.array[1] == "on":
+                print("Parameter -> On")
+            if self.array[1] == "off":
+                print("Parameter -> Off")
+            if self.array[1] == "def":
+                print("Parameter -> Def")
+        if self.array[0] == "do":
+            print("Command -> do")
+            if self.array[1] == "led":
+                print("Parameter -> led")
+                print(self.array[2] + " " + self.array[3] + " " + self.array[4])
 
 
 def main():
 
-    test_string = "set,0,0,1"
+    test_string = "do,led,10,20,30"
 
-    dec_cmd = Decoder()
+    cmd_dec = Decoder()
 
-    dec_cmd.send_data(test_string)
+    cmd_dec.send_data(test_string)
 
-    print(dec_cmd.get_result())
+
+
 
 
 if __name__ == "__main__":
