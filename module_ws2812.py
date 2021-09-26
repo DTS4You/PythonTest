@@ -109,16 +109,16 @@ def setup_ws2812():
 
 def do_test_on():
     print("Test on")
-    #led_1.show_on()
-    #led_2.show_on()
-    #ledstate.set(True)
+    led_1.show_on()
+    led_2.show_on()
+    ledstate.set(True)
 
  
 def do_test_off():
     print("Test off")
-    #led_1.show_off()
-    #led_2.show_off()
-    #ledstate.set(True)
+    led_1.show_off()
+    led_2.show_off()
+    ledstate.set(True)
 
 def do_refresh():
     ledstate.refresh()
@@ -129,13 +129,11 @@ def do_get_state():
 def run_ws2812():
 
     while True:
-        led_1.show_on()
-        led_2.show_on()
-        strip_1.show()
+        do_test_off()
+        do_refresh()
         time.sleep(0.3)
-        led_1.show_off()
-        led_2.show_off()
-        strip_1.show()
+        do_test_on()
+        do_refresh()
         time.sleep(0.3)
 
 def main():
