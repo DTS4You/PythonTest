@@ -43,8 +43,11 @@ class Ledsegment:
         self.neopixel.show()
 
 
+def setup_ws2812():
 
-def run_ws2812():
+    global strip_1, strip_2
+    global led_1, led_2
+
     numpix = 16
     strip_1 = Neopixel(numpix, 0, 2, "GRB")
     strip_2 = Neopixel(numpix, 1, 3, "GRB")
@@ -90,6 +93,18 @@ def run_ws2812():
     led_2.set_default(red)
     led_2.set_color_on(green)
 
+def do_test_on():
+        led_1.show_on()
+        led_2.show_on()
+        strip_1.show()
+ 
+def do_test_off():
+        led_1.show_off()
+        led_2.show_off()
+        strip_1.show()
+
+def run_ws2812():
+
     while True:
         led_1.show_on()
         led_2.show_on()
@@ -101,6 +116,8 @@ def run_ws2812():
         time.sleep(0.3)
 
 def main():
+
+    setup_ws2812()
     run_ws2812()
 
 
