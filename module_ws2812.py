@@ -1,5 +1,5 @@
 import time
-from neopixel import Neopixel
+import module_neopixel
 
 class LedState:
     def __init__(self):
@@ -65,7 +65,7 @@ def setup_ws2812():
     ledstate = LedState()
 
     numpix = 16
-    strip_1 = Neopixel(numpix, 0, 2, "GRB")
+    strip_1 = module_neopixel.Neopixel(numpix, 0, 2, "GRB")
 
     led_1 = Ledsegment(strip_1, 0, 2)
     led_2 = Ledsegment(strip_1, 2, 1)
