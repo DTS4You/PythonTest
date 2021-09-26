@@ -7,19 +7,14 @@ import queue
 led = machine.Pin(25, machine.Pin.OUT)
 btn = machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_UP)
 
-blink_state = False
-
 # Coroutine: blink on a timer
 async def blink(q):
-    global blink_state
-
-    blink_state = False
     delay_ms = 1000
     while True:
         if not q.empty():
             delay_ms = await q.get()
-        blink_state = not blink_state
-        print(blink_state)
+        led.toggle()
+        # print("Toggle LED " + str(delay_ms))
         await uasyncio.sleep_ms(delay_ms)
         
 # Coroutine: only return on button press
