@@ -10,10 +10,15 @@ import module_ws2812
 
 blink_state = False
 flash_state = False
+stripe_refresh = False
 
 def output_test():
     #print("1 -> " + str(blink_state))
-    pass
+    if flash_state:
+        module_ws2812.do_test_on()
+    else:
+        module_ws2812.do_test_off()
+
 
 def output_flash():
     #print("2 -> " + str(flash_state))
@@ -36,12 +41,13 @@ async def flash(delay):
     delay_ms = delay
     while True:
         flash_state = not flash_state
-        output_flash()
+        #output_flash()
         await uasyncio.sleep_ms(delay_ms)
 
 # Coroutine: only return on button press
-async def wait_button():
+async def wait_refresh():
     while True:
+
         await uasyncio.sleep(0.1)
 
 ############################################################################### 
@@ -55,25 +61,21 @@ async def main():
     # q = queue.Queue()
     
     # Start coroutine as a task and immediately return
-    uasyncio.create_task(blink(1000))
+    uasyncio.create_task(blink(300))
 
     uasyncio.create_task(flash(300))
     
+    ###########################################################################
     # Main loop
-    # timestamp = utime.ticks_ms()
+    ###########################################################################
     while True:
         
-        # Calculate time between button presses
-        await wait_button()
-        print("Press Button")
-        #new_time = utime.ticks_ms()
-        #delay_time = new_time - timestamp
-        #timestamp = new_time
-        #print(delay_time)
+        if module_ws2812.do_get_state():
+            module_ws2812.do_refresh()
+            
+        #await wait_refresh()
+        #print("Press Button")
         
-        # Send calculated time to blink task
-        #delay_time = min(delay_time, 2000)
-        #await q.put(delay_time)
     
 # Start event loop and run entry point coroutine
 uasyncio.run(main())

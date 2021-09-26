@@ -1,6 +1,19 @@
 import time
 from neopixel import Neopixel
 
+class LedState:
+    def __init__(self):
+        self.state = False
+
+    def set(self, set):
+        self.state = set
+
+    def get(self):
+        return self.state
+
+    def refresh(self):
+        self.state = False
+        strip_1.show()
 
 class Ledsegment:
 
@@ -47,13 +60,17 @@ def setup_ws2812():
 
     global strip_1
     global led_1, led_2
+    global ledstate
+    
+    ledstate = LedState()
 
     numpix = 16
     strip_1 = Neopixel(numpix, 0, 2, "GRB")
 
     led_1 = Ledsegment(strip_1, 0, 2)
     led_2 = Ledsegment(strip_1, 2, 1)
-    led_3 = Ledsegment(strip_1, 2, 1)
+    led_3 = Ledsegment(strip_1, 3, 1)
+    led_4 = Ledsegment(strip_1, 4, 1)
 
     red = (255, 0, 0)
     orange = (255, 165, 0)
@@ -65,6 +82,7 @@ def setup_ws2812():
     white = (255,255,255)
     grey = (50,50,50)
     black = (0,0,0)
+    color_default = (0,0,20)
     colors_rgb = (red, white, red, green, blue, indigo, violet)
 
     # same colors as normaln rgb, just 0 added at the end
@@ -75,9 +93,9 @@ def setup_ws2812():
     colors = colors_rgb
     #colors = colors_rgbw
 
-    strip_1.brightness(20)
+    strip_1.brightness(255)
    
-    strip_1.set_pixel_line(0, 10, orange)
+    strip_1.set_pixel_line(0, 10, color_default)
     strip_1.show()
 
     led_1.set_color_off(black)
@@ -88,15 +106,25 @@ def setup_ws2812():
     led_2.set_default(red)
     led_2.set_color_on(green)
 
+
 def do_test_on():
-        led_1.show_on()
-        led_2.show_on()
-        strip_1.show()
+    print("Test on")
+    led_1.show_on()
+    led_2.show_on()
+    ledstate.set(True)
+
  
 def do_test_off():
-        led_1.show_off()
-        led_2.show_off()
-        strip_1.show()
+    print("Test off")
+    led_1.show_off()
+    led_2.show_off()
+    ledstate.set(True)
+
+def do_refresh():
+    ledstate.refresh()
+
+def do_get_state():
+    return ledstate.get()
 
 def run_ws2812():
 

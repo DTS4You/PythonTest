@@ -28,7 +28,9 @@ class Decoder:
             if self.array[1] == "off":
                 print("Parameter -> Off")
             if self.array[1] == "def":
-                print("Parameter -> Def")
+                print("Parameter -> Default")
+            if self.array[1] == "bri":
+                print("Parameter -> Brightness")
         if self.array[0] == "do":
             print("Command -> do")
             if self.array[1] == "led":
