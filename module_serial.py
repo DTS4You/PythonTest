@@ -1,30 +1,43 @@
 # Module Serial
-import machine
+from machine import UART
+import time
 
 debug = False
 
-def serial_init():
+class SERCON:
 
-    global uart
-    
-    uart = machine.UART(0)
+    def __init__(self):
+
+        self.uart = UART(0, baudrate=115200, bits=8, parity=None, stop=1)
+
+    def write(self, string):
+
+        self.uart.write(string)
+
+    def read(self):
+
+        while self.uart.any() > 0:
+            rxData = self.uart.readline()
+            print("Input_S")
+            print(rxData)
+            print("Input_E")
 
 
-def serial_write():
-
-    uart.write(45)
-
-
-def mod_serial():
-    
-    serial_init()
-
-    serial_write()
-    
 
 def main():
-    mod_serial()
+    
+    sercon = SERCON()
 
+    txdata = b'hello world\n'
+    sercon.write(txdata)
+
+    time.sleep(5)
+
+    print("Read")
+    
+    sercon.read()
+
+    print("Ende")
 
 
 #------------------------------------------------------------------------------
