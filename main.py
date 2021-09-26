@@ -2,11 +2,11 @@
 import machine
 import uasyncio
 #import utime
-#import module_ws2812
+import module_ws2812
 import time
 
 # Settings
-led = machine.Pin(25, machine.Pin.OUT)
+#led = machine.Pin(25, machine.Pin.OUT)
 btn = machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_UP)
 
 blink_state = False
@@ -14,26 +14,26 @@ flash_state = False
 stripe_refresh = False
 
 def output_test():
-    print("1 -> " + str(blink_state))
-    #if blink_state:
-    #    module_ws2812.do_test_on()
-    #else:
-    #    module_ws2812.do_test_off()
+    #print("1 -> " + str(blink_state))
+    if blink_state:
+        module_ws2812.do_test_on()
+    else:
+        module_ws2812.do_test_off()
 
 
 def output_flash():
-    print("2 -> " + str(flash_state))
-    #if flash_state:
-    #    module_ws2812.do_test_on()
-    #else:
-    #    module_ws2812.do_test_off()
+    #print("2 -> " + str(flash_state))
+    if flash_state:
+        module_ws2812.do_test_on()
+    else:
+        module_ws2812.do_test_off()
 
 # Coroutine: blink on a timer
 async def blink(delay):
     global blink_state
     delay_ms = 300
     while True:
-        print("Blink")
+        #print("Blink")
         blink_state = not blink_state
         output_test()
         await uasyncio.sleep_ms(delay_ms)
@@ -42,9 +42,9 @@ async def flash(delay):
     global flash_state
     delay_ms = 400
     while True:
-        print("Flash")
+        #print("Flash")
         flash_state = not flash_state
-        output_flash()
+        #output_flash()
         await uasyncio.sleep_ms(delay_ms)
 
 # Coroutine: only return on button press
