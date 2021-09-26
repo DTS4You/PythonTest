@@ -5,21 +5,22 @@ import utime
 import module_ws2812
 
 # Settings
-led = machine.Pin(25, machine.Pin.OUT)
-btn = machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_UP)
+#led = machine.Pin(25, machine.Pin.OUT)
+#btn = machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_UP)
 
 blink_state = False
 flash_state = False
 
 def output_test():
-    print("1 -> " + str(blink_state))
+    #print("1 -> " + str(blink_state))
+    pass
 
 def output_flash():
-    print("2 -> " + str(flash_state))
+    #print("2 -> " + str(flash_state))
     if flash_state:
-        module_ws2812.do_test_on
+        module_ws2812.do_test_on()
     else:
-        module_ws2812.do_test_off
+        module_ws2812.do_test_off()
 
 # Coroutine: blink on a timer
 async def blink(delay):
@@ -40,10 +41,8 @@ async def flash(delay):
 
 # Coroutine: only return on button press
 async def wait_button():
-    btn_prev = btn.value()
-    while (btn.value() == 1) or (btn.value() == btn_prev):
-        btn_prev = btn.value()
-        await uasyncio.sleep(0.04)
+    while True:
+        await uasyncio.sleep(0.1)
 
 ############################################################################### 
 ### Main Program

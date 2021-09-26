@@ -45,15 +45,15 @@ class Ledsegment:
 
 def setup_ws2812():
 
-    global strip_1, strip_2
+    global strip_1
     global led_1, led_2
 
     numpix = 16
     strip_1 = Neopixel(numpix, 0, 2, "GRB")
-    strip_2 = Neopixel(numpix, 1, 3, "GRB")
 
-    led_1 = Ledsegment(strip_1, 0, 1)
-    led_2 = Ledsegment(strip_1, 1, 1)
+    led_1 = Ledsegment(strip_1, 0, 2)
+    led_2 = Ledsegment(strip_1, 2, 1)
+    led_3 = Ledsegment(strip_1, 2, 1)
 
     red = (255, 0, 0)
     orange = (255, 165, 0)
@@ -76,14 +76,9 @@ def setup_ws2812():
     #colors = colors_rgbw
 
     strip_1.brightness(20)
-    strip_2.brightness(50)
-
-    strip_2.set_pixel_line_gradient(0, 7, white, grey)
-    strip_2.set_pixel_line_gradient(8, 15, grey, white)
-
+   
     strip_1.set_pixel_line(0, 10, orange)
     strip_1.show()
-    strip_2.show()
 
     led_1.set_color_off(black)
     led_1.set_default(red)
