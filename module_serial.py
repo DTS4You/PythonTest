@@ -9,19 +9,23 @@ class SERCON:
     def __init__(self):
 
         self.uart = UART(0, baudrate=115200, bits=8, parity=None, stop=1)
+        self.line = ""
+        self.flag = True
 
     def write(self, string):
 
         self.uart.write(string)
 
     def read(self):
-
-        while self.uart.any() > 0:
-            rxData = self.uart.readline()
-            print("Input_S")
-            print(rxData)
-            print("Input_E")
-
+        self.line = self.uart.readline()
+        if self.line:
+            self.flag = True
+            return self.line
+        else:
+            self.flag = False
+            time.sleep(0.01)
+            return False
+        
 
 
 def main():
@@ -31,11 +35,17 @@ def main():
     txdata = b'hello world\n'
     sercon.write(txdata)
 
-    time.sleep(5)
+    time.sleep(1)
 
     print("Read")
     
-    sercon.read()
+    while True:
+        if sercon.read():
+            print(sercon.line)
+            sercon.write("ack\n")
+        
+    
+        
 
     print("Ende")
 
