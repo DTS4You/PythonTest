@@ -24,23 +24,44 @@ class Decoder:
         if self.array[0] == "set":
             print("Command -> Set")
             if self.array[1] == "on":
-                print("Parameter -> On")
-            if self.array[1] == "off":
-                print("Parameter -> Off")
-            if self.array[1] == "def":
-                print("Parameter -> Default")
-            if self.array[1] == "bri":
-                print("Parameter -> Brightness")
+                print("SubCommand -> On")
+                print("Parameter -> " + self.array[2] + " " + self.array[3] + " " + self.array[4])
+            elif self.array[1] == "off":
+                print("SubCommand -> Off")
+                print("Parameter -> " + self.array[2] + " " + self.array[3] + " " + self.array[4])
+            elif self.array[1] == "def":
+                print("SubCommand -> Default")
+                print("Parameter -> " + self.array[2] + " " + self.array[3] + " " + self.array[4])
+            elif self.array[1] == "bri":
+                print("SubCommand -> Brightness")
+                print("Parameter -> " + self.array[2] + " " + self.array[3] + " " + self.array[4])
+            else:
+                print("No Command")
+        
         if self.array[0] == "do":
             print("Command -> do")
             if self.array[1] == "led":
-                print("Parameter -> led")
-                print(self.array[2] + " " + self.array[3] + " " + self.array[4])
+                print("SubCommand -> led")
+                print("Parameter -> " + self.array[2] + " " + self.array[3] + " " + self.array[4])
+            elif self.array[1] == "all":
+                print("SubCommand -> all")
+                if self.array[2] == "on":
+                    print("Parameter -> on")
+                elif self.array[2] == "def":
+                    print("Parameter -> def")
+                elif self.array[2] == "off":
+                    print("Parameter -> off")
+                else:
+                    print("No Command")
+            else:
+                print("No Command")
+        else:
+            print("No Command")
 
 
 def main():
 
-    test_string = "do,led,10,20,30"
+    test_string = "do,all,on"
 
     cmd_dec = Decoder()
 
