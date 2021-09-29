@@ -1,13 +1,16 @@
-import module_ws2812 as WS2812
+import module_ws2812
 
 
 def mod_loader():
     print("Start-Loader")
-    run_ws2812()
+    run_led()
 
 
-def run_ws2812():
-    WS2812.run_ws2812()
+def init_led():
+    module_ws2812.setup_ws2812()
+
+def run_led():
+    module_ws2812.run_ws2812()
 
 
 
