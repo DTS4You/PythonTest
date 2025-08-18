@@ -14,7 +14,7 @@ class Objekt:
 def finde_objekte_mit_eigenschaft(objekte, eigenschaft_wert):
     return [obj for obj in objekte if obj.stripe == eigenschaft_wert]
 
-# Beispielobjekte
+# Objekte anlegen
 objekte = [
     Objekt(1, 1, 4, False),
     Objekt(2, 1, 6,True),
