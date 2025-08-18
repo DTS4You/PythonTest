@@ -23,8 +23,9 @@ objekte = [
 
 # Objekte mit Eigenschaft '1' finden
 ergebnis = finde_objekte_mit_eigenschaft(objekte, 1)
+ergebnis[0].start_led = 5
 for obj in ergebnis:
-    print(obj.index, obj.stripe)
+    print(obj.index, obj.stripe, obj.num_led, obj.start_led)
 
 # Alle verschiedenen Eigenschaften ermitteln
 eigenschaften = set(obj.stripe for obj in objekte)
