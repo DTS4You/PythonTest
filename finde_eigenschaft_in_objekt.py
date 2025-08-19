@@ -1,7 +1,7 @@
 # Led-Segment Klasse
 class Led_Segment:
     def __init__(self, uid, stripe, index, num_led, direction=False):
-        self.index      = uid               # LED_Segment UID fortlaufend ab 1
+        self.uid        = uid               # LED_Segment UID fortlaufend ab 1
         self.stripe     = stripe            # LED_Stripe beginnt mit 1 (PIO-Sektion, Pinzuordnung)
         self.index      = index             # LED_Segemnt im Stripe beginnt mit 1
         self.num_led    = num_led           # Anzahl der LEDs im Segment
@@ -22,7 +22,8 @@ segments = [
     Led_Segment(2, 1, 2, 6, True),         # 2. Segment
     Led_Segment(3, 1, 3, 8, False),        # 3. Segment
     Led_Segment(4, 2, 1, 8, True),         # 4. Segment
-    Led_Segment(5, 2, 2, 8, False)         # 5. Segment
+    Led_Segment(5, 2, 2, 8, False),        # 5. Segment
+    Led_Segment(6, 3, 1, 8, False)
 ]
 
 # Objekte mit Eigenschaft 'X' finden
@@ -33,6 +34,7 @@ segments = [
 # Alle verschiedenen Eigenschaften ermitteln
 eigenschaften = set(obj.stripe for obj in segments)
 eigenschaften_liste = sorted(eigenschaften)
+print(eigenschaften_liste)
 last_index = 0
 for value in eigenschaften_liste:
     ergebnis = finde_objekte_mit_eigenschaft(segments, value)
@@ -42,7 +44,7 @@ for value in eigenschaften_liste:
         else:
             segments[obj.index - 1].start_led = segments[obj.index - 2].num_led + segments[obj.index - 2].start_led
         segments[obj.index - 1].stop_led = segments[obj.index - 1].start_led + segments[obj.index - 1].num_led
-        print(obj.index, obj.stripe, obj.start_led, obj.stop_led, obj.num_led, obj.direction)
+        print(obj.uid, obj.stripe, obj.index, obj.start_led, obj.stop_led, obj.num_led, obj.direction)
 
     
 
