@@ -14,14 +14,39 @@ class PLC:
         # Zustand der Steuerung
         self.state = 'IDLE'
 
-    def lesen_eingaenge(self):
+    def set_state(self, state='STOP'):
+        if state == 'START':
+            self.state = 'RUN'
+            return self.state
+        if state == 'RUN':
+            self.state = 'RUN'
+            return self.state
+        self.state = 'STOP'
+        return self.state
+    
+
+    def set_state_idle(self):
+        self.state = 'IDLE'
+
+    def read_input(self):
         # Eingänge vom Benutzer simulieren
         self.inputs['start'] = input("Start-Taster drücken? (ja/nein): ").lower() == 'ja'
         self.inputs['stop'] = input("Stop-Taster drücken? (ja/nein): ").lower() == 'ja'
         self.inputs['sensor'] = input("Sensor aktiviert? (ja/nein): ").lower() == 'ja'
+    
+    def write_output(self):
+        print(f"Motor: {'An' if self.outputs['motor'] else 'Aus'}")
+        print(f"Alarm: {'An' if self.outputs['alarm'] else 'Aus'}")
+        print(f"Aktueller Zustand: {self.state}")
 
-    def steuerung_ablauf(self):
-        if self.state == 'IDLE':
+    def cycle(self):
+        self.read_input()
+        self.logic()
+        self.write_output()
+        print("-" * 30)
+
+    def logic(self):
+        if self.state == 'RUN':
             if self.inputs['start']:
                 print("Motor startet...")
                 self.outputs['motor'] = True
@@ -37,19 +62,11 @@ class PLC:
             else:
                 self.outputs['alarm'] = False
 
-    def ausgabe_anzeigen(self):
-        print(f"Motor: {'An' if self.outputs['motor'] else 'Aus'}")
-        print(f"Alarm: {'An' if self.outputs['alarm'] else 'Aus'}")
-        print(f"Aktueller Zustand: {self.state}")
-
-    def laufen(self):
-        while True:
-            self.lesen_eingaenge()
-            self.steuerung_ablauf()
-            self.ausgabe_anzeigen()
-            print("-" * 30)
+def main():
+    plc = PLC()
+    plc.cycle()
 
 # Hauptprogramm
 if __name__ == "__main__":
-    plc = PLC()
-    plc.laufen()
+
+    main()
