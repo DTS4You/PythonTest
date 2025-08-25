@@ -34,20 +34,27 @@ segments = [
 #for obj in ergebnis:
 #    print(obj.index, obj.stripe, obj.num_led, obj.start_led)
 
+def main():
 # Alle verschiedenen Eigenschaften ermitteln
-eigenschaften = set(obj.stripe for obj in segments)
-eigenschaften_liste = sorted(eigenschaften)
-print(eigenschaften_liste)
-last_index = 0
-for value in eigenschaften_liste:
-    ergebnis = finde_objekte_mit_eigenschaft(segments, value)
-    for obj in ergebnis:
-        if value is not last_index:
-            last_index = obj.index
-        else:
-            segments[obj.index - 1].start_led = segments[obj.index - 2].num_led + segments[obj.index - 2].start_led
-        segments[obj.index - 1].stop_led = segments[obj.index - 1].start_led + segments[obj.index - 1].num_led
-        print(obj.uid, obj.stripe, obj.index, obj.start_led, obj.stop_led, obj.num_led, obj.direction)
+    eigenschaften = set(obj.stripe for obj in segments)
+    eigenschaften_liste = sorted(eigenschaften)
+    print(eigenschaften_liste)
+    last_index = 0
+    for value in eigenschaften_liste:
+        ergebnis = finde_objekte_mit_eigenschaft(segments, value)
+        for obj in ergebnis:
+            if value is not last_index:
+                last_index = obj.index
+            else:
+                segments[obj.index - 1].start_led = segments[obj.index - 2].num_led + segments[obj.index - 2].start_led
+                segments[obj.index - 1].stop_led = segments[obj.index - 1].start_led + segments[obj.index - 1].num_led
+            print(obj.uid, obj.stripe, obj.index, obj.start_led, obj.stop_led, obj.num_led, obj.direction)
 
     
+#------------------------------------------------------------------------------
+#--- Main
+#------------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    main()
 
