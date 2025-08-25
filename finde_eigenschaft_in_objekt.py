@@ -18,14 +18,23 @@ def finde_objekte_mit_eigenschaft(objekte, eigenschaft_wert):
 
 #==============================================================================
 # Objekte anlegen   (UID, Stripe, Index, Anzahl, Richtung)
-segments = [
+green_segments = [
     Led_Segment(1, 1, 1, 4, False),         # 1. Segment
-    Led_Segment(2, 1, 2, 6, True),          # 2. Segment
+    Led_Segment(2, 1, 2, 6, False),         # 2. Segment
     Led_Segment(3, 1, 3, 8, False),         # 3. Segment
-    Led_Segment(4, 2, 1, 8, True),          # 4. Segment
+    Led_Segment(4, 2, 1, 8, False),         # 4. Segment
     Led_Segment(5, 2, 2, 8, False),         # 5. Segment
     Led_Segment(6, 3, 1, 8, False),         # 6. Segment
-    Led_Segment(7, 7, 1, 8, False)
+    Led_Segment(7, 7, 1, 8, False)          # 7. Segment
+]
+
+red_segments = [
+    Led_Segment(1, 1, 1, 4, True),          # 1. Segment
+    Led_Segment(2, 1, 2, 6, True),          # 2. Segment
+    Led_Segment(3, 1, 3, 8, True),          # 3. Segment
+    Led_Segment(4, 2, 1, 8, True),          # 4. Segment
+    Led_Segment(5, 2, 2, 8, True),          # 5. Segment
+    Led_Segment(6, 2, 3, 8, False)          # 6. Segment
 ]
 #==============================================================================
 
@@ -33,6 +42,10 @@ segments = [
 #ergebnis = finde_Led_Segment_mit_eigenschaft(objekte, 1)
 #for obj in ergebnis:
 #    print(obj.index, obj.stripe, obj.num_led, obj.start_led)
+
+# Umschalten Rot / Grün
+#segments = green_segments
+segments = red_segments
 
 def main():
 # Alle verschiedenen Eigenschaften ermitteln
