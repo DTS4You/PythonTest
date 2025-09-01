@@ -1,20 +1,16 @@
 # Test
 # 18.08.2025
-print("Hallo")
 
-class Segment:
-    def __init__(self):
-        self.stripe     = 1
-        self.led_start  = 0
-        self.led_stop   = 0
-        self.led_num    = 0
+import keyboard
 
+while True:
+    if keyboard.read_key() == "p":
+        print("You pressed p")
+        break
 
-NUM_SEGMENTS = 8
+while True:
+    if keyboard.is_pressed("q"):
+        print("You pressed q")
+        break
 
-segs = [Segment() for dummy in range(NUM_SEGMENTS)]
-
-print(len(segs))
-
-for index in range(len(segs)):
-    print(segs[index].stripe)
+keyboard.on_press_key("r", lambda _: print("You pressed r"))
