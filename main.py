@@ -1,16 +1,18 @@
 # Test
 # 18.08.2025
 
-import keyboard
+from pynput import mouse
 
-while True:
-    if keyboard.read_key() == "p":
-        print("You pressed p")
-        break
+class MyException(Exception): pass
 
-while True:
-    if keyboard.is_pressed("q"):
-        print("You pressed q")
-        break
+def on_click(x, y, button, pressed):
+    if button == mouse.Button.left:
+        raise MyException(button)
 
-keyboard.on_press_key("r", lambda _: print("You pressed r"))
+# Collect events until released
+with mouse.Listener(
+        on_click=on_click) as listener:
+    try:
+        listener.join()
+    except MyException as e:
+        print('{} was clicked'.format(e.args[0]))
