@@ -1,18 +1,17 @@
 class PLC:
     def __init__(self):
-        # Eingänge (z.B. Taster, Sensoren)
-        self.inputs = {
+        self.state = 'STOP'                 # Zustand der Steuerung
+        self.step_value = 0                 # Ablaufsteuerung Schrittwert
+        self.step_max = 5                   # Maximale Schritte Anzahl
+        self.inputs = {                     # Eingänge (z.B. Taster, Sensoren)
             'start': False,
             'stop': False,
             'sensor': False
         }
-        # Ausgänge (z.B. Motor, Relais)
-        self.outputs = {
+        self.outputs = {                    # Ausgänge (z.B. Motor, Relais)
             'motor': False,
             'alarm': False
         }
-        # Zustand der Steuerung
-        self.state = 'IDLE'
 
     def set_state(self, state='STOP'):
         if state == 'START':
@@ -24,9 +23,6 @@ class PLC:
         self.state = 'STOP'
         return self.state
     
-
-    def set_state_idle(self):
-        self.state = 'IDLE'
 
     def read_input(self):
         # Eingänge vom Benutzer simulieren
@@ -47,26 +43,18 @@ class PLC:
 
     def logic(self):
         if self.state == 'RUN':
-            if self.inputs['start']:
-                print("Motor startet...")
-                self.outputs['motor'] = True
-                self.state = 'RUNNING'
-        elif self.state == 'RUNNING':
-            if self.inputs['stop']:
-                print("Motor stoppt...")
-                self.outputs['motor'] = False
-                self.state = 'IDLE'
-            elif self.inputs['sensor']:
-                print("Sensor aktiviert! Alarm auslösen.")
-                self.outputs['alarm'] = True
-            else:
-                self.outputs['alarm'] = False
+            print("PLC -> RUN")
 
 def main():
+    state = 'RUN'
     plc = PLC()
-    plc.cycle()
+    print(plc.set_state(state))
+    #plc.cycle()
 
-# Hauptprogramm
+# ###############################################################################
+# ### Main                                                                    ###
+# ###############################################################################
+
 if __name__ == "__main__":
 
     main()
