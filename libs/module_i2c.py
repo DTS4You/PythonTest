@@ -9,17 +9,12 @@ import time # type: ignore
 
 class GPIO:
 
-    def __init__(self, blink_time=10, run_time= 1000):
+    def __init__(self):
         i2c = I2C(0, scl=Pin(21), sda=Pin(20))
         self.mcp = MCP23017(i2c, 0x20)
         self.input = False
         self.output = False
         self.state = False
-        self.run_counter = 0
-        self.run_time = run_time
-        self.blink_state = False
-        self.blink_counter = 0
-        self.blink_time = blink_time
 
     def get_input(self, pin):
         self.input = self.mcp.pin(pin, mode=1, pullup=True)
@@ -65,6 +60,7 @@ def main():
     print("=== Start Main ===")
     gpio = GPIO()
 
+    """
     for i in range(0,8):
         gpio.set_output(i, True)
         time.sleep(0.3)
@@ -87,6 +83,7 @@ def main():
         print("Exiting the program")
 
     print("=== End Main ===")
+    """
 
 # ------------------------------------------------------------------------------
 # --- Main
