@@ -1,8 +1,8 @@
 
 
 class Byte_Bitfield():
-    def __init__(self, value):
-        self.value  = value
+    def __init__(self):
+        self.value  = 0x00
         self.bit_   = [False, False, False, False, False, False, False, False]
 
     def convert(self, value):
@@ -14,8 +14,8 @@ class Byte_Bitfield():
                 self.bit_[i] = False
 
 class Bitfield_Byte():
-    def __init__(self, value):
-        self.value  = value
+    def __init__(self):
+        self.value  = 0x00
         self.bit_   = [False, False, False, False, False, False, False, False]
     
     def convert(self):
@@ -23,11 +23,12 @@ class Bitfield_Byte():
         for i in range(8):
             if self.bit_[i] == True:
                 self.value = self.value | 1 << i
+        return self.value
 
 
-input_bf = Byte_Bitfield(0x00)
+input_bf = Byte_Bitfield()
 
-output_bf = Bitfield_Byte(0x00)
+output_bf = Bitfield_Byte()
 
 input_bf.convert(0xAA)
 
