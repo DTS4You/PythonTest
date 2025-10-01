@@ -38,7 +38,5 @@ for i in range(8):
 output_bf.bit_[0] = True
 output_bf.bit_[2] = True
 
-output_bf.convert()
-
 print(output_bf.convert())
 
