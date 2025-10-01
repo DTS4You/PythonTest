@@ -1,6 +1,6 @@
-x = 0xff
 
-class Bitfield():
+
+class Byte_Bitfield():
     def __init__(self, value):
         self.value  = value
         self.bit_   = [False, False, False, False, False, False, False, False]
@@ -13,10 +13,31 @@ class Bitfield():
             else:
                 self.bit_[i] = False
 
+class Bitfield_Byte():
+    def __init__(self, value):
+        self.value  = value
+        self.bit_   = [False, False, False, False, False, False, False, False]
+    
+    def convert(self):
+        self.value = 0x00
+        for i in range(8):
+            if self.bit_[i] == True:
+                self.value = self.value | 1 << i
 
-bf = Bitfield(0x00)
 
-bf.convert(0xff)
+input_bf = Byte_Bitfield(0x00)
+
+output_bf = Bitfield_Byte(0x00)
+
+input_bf.convert(0xAA)
 
 for i in range(8):
-    print(bf.bit_[i])
+    print(input_bf.bit_[i])
+
+output_bf.bit_[0] = True
+output_bf.bit_[2] = True
+
+output_bf.convert()
+
+print(output_bf.value)
+
