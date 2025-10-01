@@ -40,5 +40,5 @@ output_bf.bit_[2] = True
 
 output_bf.convert()
 
-print(output_bf.value)
+print(output_bf.convert())
 
