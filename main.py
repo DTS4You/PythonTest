@@ -8,7 +8,7 @@ i2c = I2C(0, scl=Pin(21), sda=Pin(20))
 mcp = mcp23017_hs.MCP23017(i2c, 0x20)
 
 
-mcp._write([0x12, 0xAA])
+#mcp._write([0x12, 0xAA])
 
 
 while(True):
