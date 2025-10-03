@@ -1,4 +1,4 @@
-
+# Bitfield Test
 
 class Byte_Bitfield():
     def __init__(self):
