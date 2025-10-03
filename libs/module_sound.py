@@ -56,19 +56,14 @@ def main():
 
     try:
         print("Start")
-        
         pwm_sound = PWM_SOUND(0,1)
-
         pwm_sound.play_sound("red")
         sleep(0.5)
         pwm_sound.play_sound("green")
-
     except KeyboardInterrupt:
         print("Keyboard Interrupt")
-
     finally:
         print("Exiting the program")
-
     print("=== End Main ===")
 
 # ------------------------------------------------------------------------------
