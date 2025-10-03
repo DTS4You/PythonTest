@@ -38,10 +38,7 @@ def main():
         gpio = GPIO()
 
         while(True):
-
-            
             print(bin(gpio.outputs))
-    
             time.sleep(0.2)
     except KeyboardInterrupt:
         print("Keyboard Interrupt")
