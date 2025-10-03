@@ -20,6 +20,7 @@ class GPIO:
 
     def get_input(self):
         self.inputs = int.from_bytes(self.mcp._read(0x13, 1), 'big')
+        return self.inputs
 
     def set_output(self):
         self.mcp._write([0x12, self.outputs])
