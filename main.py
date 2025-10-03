@@ -1,10 +1,10 @@
 #
 from machine import Pin, I2C # type: ignore
-import mcp23017_raw
+import libs.mcp23017_raw as mcp23017
 import time
 
 i2c = I2C(0, scl=Pin(21), sda=Pin(20))
-mcp = mcp23017_raw.MCP23017(i2c, 0x20)
+mcp = mcp23017.MCP23017(i2c, 0x20)
 
 
 while(True):
