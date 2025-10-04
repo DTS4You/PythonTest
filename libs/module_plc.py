@@ -1,6 +1,8 @@
 class PLC:
     def __init__(self):
         self.state = 'STOP'                 # Zustand der Steuerung
+        self.inputs = 0x00
+        self.outputs = 0x00
         self.step_value = 0                 # Ablaufsteuerung Schrittwert
         self.step_max = 5                   # Maximale Schritte Anzahl
         self.inputs = {                     # Eingänge (z.B. Taster, Sensoren)
@@ -24,21 +26,16 @@ class PLC:
         return self.state
     
 
-    def read_input(self):
-        # Eingänge vom Benutzer simulieren
-        self.inputs['start'] = input("Start-Taster drücken? (ja/nein): ").lower() == 'ja'
-        self.inputs['stop'] = input("Stop-Taster drücken? (ja/nein): ").lower() == 'ja'
-        self.inputs['sensor'] = input("Sensor aktiviert? (ja/nein): ").lower() == 'ja'
+    def read_input(self, inputs):
+        self.inputs = inputs
     
-    def write_output(self):
-        print(f"Motor: {'An' if self.outputs['motor'] else 'Aus'}")
-        print(f"Alarm: {'An' if self.outputs['alarm'] else 'Aus'}")
-        print(f"Aktueller Zustand: {self.state}")
+    def write_output(self, outputs):
+        self.outputs = outputs
 
     def cycle(self):
-        self.read_input()
+        self.read_input(0x00)
         self.logic()
-        self.write_output()
+        self.write_output(0x00)
         print("-" * 30)
 
     def logic(self):
