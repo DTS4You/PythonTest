@@ -51,10 +51,14 @@ def main():
         while(True):
             xio.value[0] = True
             xio.value[1] = False
+            xio.value[2] = True
+            xio.value[3] = False
             xio.io_write()
             sleep(0.5)
             xio.value[0] = False
             xio.value[1] = True
+            xio.value[2] = False
+            xio.value[3] = True
             xio.io_write()
             sleep(0.5)
 
