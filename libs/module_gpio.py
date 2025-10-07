@@ -4,7 +4,7 @@
 # #############################################################################
 from machine import Pin, I2C # type: ignore
 import libs.mcp23017_raw as mcp23017
-import time # type: ignore
+from time import sleep # type: ignore
 
 #i2c = I2C(0, scl=Pin(21), sda=Pin(20))
 #mcp = mcp23017.MCP23017(i2c, 0x20)
@@ -22,7 +22,9 @@ class GPIO:
         self.inputs = int.from_bytes(self.mcp._read(0x13, 1), 'big')
         return self.inputs
 
-    def set_output(self):
+    def set_output(self, value=None):
+        if not value == None:
+            self.outputs = value
         self.mcp._write([0x12, self.outputs])
         return self.outputs
 
@@ -39,8 +41,10 @@ def main():
         gpio = GPIO()
 
         while(True):
-            print(bin(gpio.outputs))
-            time.sleep(0.2)
+
+            value_io = gpio.get_input()
+            gpio.set_output(value_io)
+            sleep(0.2)
     except KeyboardInterrupt:
         print("Keyboard Interrupt")
     finally:
