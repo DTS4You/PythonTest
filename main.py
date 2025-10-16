@@ -1,18 +1,47 @@
-#
-from machine import Pin, I2C # type: ignore
-import libs.mcp23017_raw as mcp23017
 import time
+from threading import Event as ThreadingEvent
+from threading import Thread
 
-i2c = I2C(0, scl=Pin(21), sda=Pin(20))
-mcp = mcp23017.MCP23017(i2c, 0x20)
-
-
-while(True):
-
-    input_reg = int.from_bytes(mcp._read(0x13, 1), 'big')
-    mcp._write([0x12, input_reg])
-    print(bin(input_reg))
-    
-    time.sleep(0.2)
+from statemachine import State
+from statemachine import StateMachine
 
 
+class TrafficLightMachine(StateMachine):
+    """A traffic light machine"""
+
+    green = State(initial=True)
+    yellow = State()
+    red = State()
+
+    cycle = green.to(yellow) | yellow.to(red) | red.to(green)
+
+    def before_cycle(self, event: str, source: State, target: State):
+        print(f"Running {event} from {source.id} to {target.id}")
+
+class Supervisor:
+    def __init__(self, sm: StateMachine, sm_event: str):
+        self.sm = sm
+        self.sm_event = sm_event
+        self.stop_event = ThreadingEvent()
+
+    def run(self):
+        while not self.stop_event.is_set():
+            self.sm.send(self.sm_event)
+            self.stop_event.wait(1)
+
+    def stop(self):
+        self.stop_event.set()
+
+
+def main():
+    supervisor = Supervisor(TrafficLightMachine(), "cycle")
+    t = Thread(target=supervisor.run)
+    t.start()
+
+    time.sleep(3)
+    supervisor.stop()
+    t.join()
+
+
+if __name__ == "__main__":
+    main()
