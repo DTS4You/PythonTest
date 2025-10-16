@@ -2,12 +2,12 @@
 class Led_Segment:
     def __init__(self, uid, stripe, index, num_led, direction=False):
         self.uid        = uid               # LED_Segment UID fortlaufend ab 1
-        self.stripe     = stripe            # LED_Stripe beginnt mit 1 (PIO-Sektion, Pinzuordnung)
-        self.index      = index             # LED_Segemnt im Stripe beginnt mit 1
+        self.stripe     = stripe            # LED_Stripe beginnt mit 1 (PIO-Sektion, Pin-Zuordnung)
+        self.index      = index             # LED_Segment im Stripe beginnt mit 1
         self.num_led    = num_led           # Anzahl der LEDs im Segment
         self.start_led  = 0                 # Startposition beginnt mit 0
         self.stop_led   = 0                 # Stopposition beginnt mit 0
-        self.direction  = direction         # Richtung False -> Links nach Rechts / True -> Rechts nach links
+        self.direction  = direction         # Richtung: False → Von links nach rechts | True → Von rechts nach links
         self.color_off  = (0,0,0)
         self.refresh    = False             # Wurde das Led_Segment verändert
         
