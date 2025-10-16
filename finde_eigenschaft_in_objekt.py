@@ -61,7 +61,8 @@ def main():
             else:
                 segments[obj.index - 1].start_led = segments[obj.index - 2].num_led + segments[obj.index - 2].start_led
                 segments[obj.index - 1].stop_led = segments[obj.index - 1].start_led + segments[obj.index - 1].num_led
-            print(obj.uid, obj.stripe, obj.index, obj.start_led, obj.stop_led, obj.num_led, obj.direction)
+            #print(obj.uid, obj.stripe, obj.index, obj.start_led, obj.stop_led, obj.num_led, obj.direction)
+            print(f'UID: {obj.uid:2}, Index: {obj.index:2}, Start: {obj.start_led:3}, Stop: {obj.stop_led:3}, Num: {obj.num_led:3}, Dir: {obj.direction}')
 
     
 #------------------------------------------------------------------------------
