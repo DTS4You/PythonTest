@@ -30,9 +30,9 @@ green_segments = [
 
 red_segments = [
     Led_Segment(1, 1, 1, 4, True),          # 1. Segment
-    Led_Segment(2, 1, 2, 6, True),          # 2. Segment
+    Led_Segment(2, 1, 2, 6, False),          # 2. Segment
     Led_Segment(3, 1, 3, 8, True),          # 3. Segment
-    Led_Segment(4, 2, 1, 8, True),          # 4. Segment
+    Led_Segment(4, 2, 1, 8, False),          # 4. Segment
     Led_Segment(5, 2, 2, 8, True),          # 5. Segment
     Led_Segment(6, 2, 3, 8, False)          # 6. Segment
 ]
@@ -51,7 +51,6 @@ def do_this(value):
     if value == "green":
         segments = green_segments
 
-
     # Alle verschiedenen Eigenschaften ermitteln
     eigenschaften = set(obj.stripe for obj in segments)
     eigenschaften_liste = sorted(eigenschaften)
@@ -68,7 +67,7 @@ def do_this(value):
             #print(obj.uid, obj.stripe, obj.index, obj.start_led, obj.stop_led, obj.num_led, obj.direction)
             print(f'UID: {obj.uid:2}, Index: {obj.index:2}, Start: {obj.start_led:3}, Stop: {obj.stop_led:3}, Num: {obj.num_led:3}, Dir: {obj.direction}')
 
-    print(segments)
+    print(len(segments))
 
 def main():
 
@@ -77,6 +76,7 @@ def main():
     do_this("green")
 
     do_this("red")
+
 
 #------------------------------------------------------------------------------
 #--- Main
