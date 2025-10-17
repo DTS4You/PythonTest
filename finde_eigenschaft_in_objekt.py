@@ -43,12 +43,16 @@ red_segments = [
 #for obj in ergebnis:
 #    print(obj.index, obj.stripe, obj.num_led, obj.start_led)
 
-# Umschalten Rot / Grün
-#segments = green_segments
-segments = red_segments
 
-def main():
-# Alle verschiedenen Eigenschaften ermitteln
+def do_this(value):
+
+    if value == "red":
+        segments = red_segments
+    if value == "green":
+        segments = green_segments
+
+
+    # Alle verschiedenen Eigenschaften ermitteln
     eigenschaften = set(obj.stripe for obj in segments)
     eigenschaften_liste = sorted(eigenschaften)
     print(eigenschaften_liste)
@@ -64,7 +68,16 @@ def main():
             #print(obj.uid, obj.stripe, obj.index, obj.start_led, obj.stop_led, obj.num_led, obj.direction)
             print(f'UID: {obj.uid:2}, Index: {obj.index:2}, Start: {obj.start_led:3}, Stop: {obj.stop_led:3}, Num: {obj.num_led:3}, Dir: {obj.direction}')
 
-    
+    print(segments)
+
+def main():
+
+    do_this("red")
+
+    do_this("green")
+
+    do_this("red")
+
 #------------------------------------------------------------------------------
 #--- Main
 #------------------------------------------------------------------------------
