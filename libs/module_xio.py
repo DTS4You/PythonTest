@@ -1,66 +1,142 @@
-#------------------------------------------------------------------------------
-# Sound     : Play Tone
-# Version   : 1.00
-#------------------------------------------------------------------------------
+# #############################################################################
+# ### Modul XIO
+# ### V1.00
+# #############################################################################
 
-from machine import Pin
-from time import sleep
+from machine import Pin, PWM        # type: ignore
+from utime import sleep             # type: ignore
 
-class XIO(object):
-    def __init__(self, direction=False):
-        self.direction = direction
-        self.init_setup()
-        
-    def init_setup(self):
-        if self.direction == True:
-            self.init_input()
+
+class XIO:
+
+    def __init__(self, dir):
+        self.dir = dir
+        self.value = 0x00
+        self.io = [False, False, False, False]
+        self.pin = []
+        if dir == "OUTPUT":
+            self.set_xio_out()
         else:
-            self.init_output()
+            self.set_xio_in()
 
-    def init_input(self):
-        print("INPUT")
-        self.value = [False, False, False, False]
-        self.io = [Pin(10, Pin.IN), Pin(11, Pin.IN), Pin(12, Pin.IN), Pin(13, Pin.IN)]
+    def set_xio_out(self):
+        self.pin.append(Pin(10, mode=Pin.OUT))
+        self.pin.append(Pin(11, mode=Pin.OUT))
+        self.pin.append(Pin(12, mode=Pin.OUT))
+        self.pin.append(Pin(13, mode=Pin.OUT))
+
+    def set_xio_in(self):
+        self.pin.append(Pin(10, mode=Pin.IN, pull=Pin.PULL_UP))
+        self.pin.append(Pin(11, mode=Pin.IN, pull=Pin.PULL_UP))
+        self.pin.append(Pin(12, mode=Pin.IN, pull=Pin.PULL_UP))
+        self.pin.append(Pin(13, mode=Pin.IN, pull=Pin.PULL_UP))
+
+    def read_input(self):
         for i in range(4):
-            self.value[i] = bool(self.io[i].value())
+            self.io[i] = self.pin[i].value()
+
+    def write_output(self):
+        for i in range(4):
+            self.pin[i].value(self.io[i])
     
-    def init_output(self):
-        print("OUTPUT")
-        self.value = [False, False, False, False]
-        self.io = [Pin(10, Pin.OUT), Pin(11, Pin.OUT), Pin(12, Pin.OUT), Pin(13, Pin.OUT)]
-        for i in range(4):
-            self.io[i].value(False)
+    def read_io(self):
+        self.read_input()
+        return self.get_byte()
+    
+    def write_io(self, value):
+        self.set_byte(value)
+        self.write_output()
 
-    def io_read(self):
+    def set_bit(self, bit, value=True):
+        self.io[bit] = value
+        return self.io[bit]
+    
+    def get_bit(self, bit):
+        return self.io[bit]
+    
+    def set_byte(self, value):
+        self.value = value
         for i in range(4):
-            self.value[i] = bool(self.io[i].value())
+            if (self.value & 1 << i ):
+                self.io[i] = True
+            else:
+                self.io[i] = False
 
-    def io_write(self):
+    def get_byte(self):
+        self.value = 0x00
         for i in range(4):
-            self.io[i].value(self.value[i])
-
+            if self.io[i] == True:
+                self.value = self.value | 1 << i
+        return self.value
+    
 # -----------------------------------------------------------------------------
 def main():
 
-    print("=== Start Main -> Module_Sound ===")
+    print("=== Start Main -> Module_XIO ===")
 
     try:
         print("Start")
-        xio = XIO(False)
 
-        while(True):
-            xio.value[0] = True
-            xio.value[1] = False
-            xio.value[2] = True
-            xio.value[3] = False
-            xio.io_write()
-            sleep(0.5)
-            xio.value[0] = False
-            xio.value[1] = True
-            xio.value[2] = False
-            xio.value[3] = True
-            xio.io_write()
-            sleep(0.5)
+        debug = "OUTPUT"
+
+        if debug == "OUTPUT":
+            print("Write Output")
+            xio = XIO("OUTPUT")
+
+            xio.write_output()
+
+            sleep(1)
+        
+            xio.set_bit(0, True)
+            xio.set_bit(1, False)
+            xio.set_bit(2, True)
+            xio.set_bit(3, False)
+
+            xio.write_output()
+
+            sleep(1)
+
+            xio.set_byte(0xAA)
+            xio.write_output()
+            print(hex(xio.get_byte()))
+
+            sleep(1)
+
+            xio.set_byte(0x55)
+            xio.write_output()
+            print(hex(xio.get_byte()))
+
+            sleep(1)
+            xio.write_io(0xAA)
+            print(hex(xio.get_byte()))
+
+            sleep(1)
+            xio.write_io(0x55)
+            print(hex(xio.get_byte()))
+
+            sleep(1)
+            xio.write_io(0x00)
+            print("Delete Object")
+            del xio
+        
+        else:
+            print("Read Input")
+            xio = XIO("INPUT")
+            xio.read_input()
+            print(hex(xio.get_byte()))
+
+            print("Bit 0 = " + str(xio.get_bit(0)) + " | Bit 1 = " + str(xio.get_bit(1)) + " | Bit 2 = " + str(xio.get_bit(2)) + " | Bit 3 = " + str(xio.get_bit(3)))
+
+            sleep(1)
+
+            for i in range(10):
+                xio.read_io()
+                print("Bit 0 = " + str(xio.get_bit(0)) + " | Bit 1 = " + str(xio.get_bit(1)) + " | Bit 2 = " + str(xio.get_bit(2)) + " | Bit 3 = " + str(xio.get_bit(3)))
+                sleep(0.5)
+            
+            print("Delete Object")
+            del xio
+      
 
     except KeyboardInterrupt:
         print("Keyboard Interrupt")
