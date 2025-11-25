@@ -4,28 +4,41 @@ from libs.neopixel import Neopixel
 
 
 transfer_mode = "PUT"
-numpix = 300
+numpix = 20
 
-strip_1 = Neopixel(numpix, 0, 2, "GRB", 0.0001, transfer_mode)
-strip_2 = Neopixel(numpix, 1, 3, "GRB", 0.0001, transfer_mode)
-strip_3 = Neopixel(numpix, 2, 4, "GRB", 0.0001, transfer_mode)
-strip_4 = Neopixel(numpix, 3, 5, "GRB", 0.0001, transfer_mode)
+strip = []
+
+strip.append(Neopixel(numpix, 0, 2, "GRB", 0.0001, transfer_mode))
+strip.append(Neopixel(numpix, 1, 3, "GRB", 0.0001, transfer_mode))
+strip.append(Neopixel(numpix, 2, 4, "GRB", 0.0001, transfer_mode))
+strip.append(Neopixel(numpix, 3, 5, "GRB", 0.0001, transfer_mode))
+strip.append(Neopixel(numpix, 4, 6, "GRB", 0.0001, transfer_mode))
+strip.append(Neopixel(numpix, 5, 7, "GRB", 0.0001, transfer_mode))
+strip.append(Neopixel(numpix, 6, 8, "GRB", 0.0001, transfer_mode))
+strip.append(Neopixel(numpix, 7, 9, "GRB", 0.0001, transfer_mode))
 
 
-color_1 = (100,0,0)
-color_2 = (0,100,0)
-color_3 = (0,0,100)
-color_4 = (50,40,70)
-strip_1.fill(color_1)
-strip_2.fill(color_2)
-strip_3.fill(color_3)
-strip_4.fill(color_4)
+color_1 = ( 50,0,0)
+color_2 = (0, 50,0)
+color_3 = (0,0, 50)
+color_4 = (20,20,20)
+strip[0].fill(color_1)
+strip[1].fill(color_2)
+strip[2].fill(color_3)
+strip[3].fill(color_4)
+strip[4].set_pixel_line_gradient(0, 19, color_1, color_2)
+strip[5].fill(color_4)
+strip[6].fill(color_4)
+strip[7].fill(color_4)
+
+strip[3].set_pixel(0, color_1)
 
 while(True):
     
-    strip_1.show()
-    strip_2.show()
-    strip_3.show()
-    strip_4.show()
+    strip[3].rotate_right(1)
+    strip[4].rotate_left(1)
 
-    time.sleep(0.02)
+    for i in range(8):
+        strip[i].show()
+
+    time.sleep(0.3)
