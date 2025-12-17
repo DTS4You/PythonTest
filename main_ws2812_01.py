@@ -83,18 +83,31 @@ class LED_STRIP:
 
 
 
-led_1 = LED_STRIP(20, 0, 2, color_red, color_yellow, True, "Mask")
 
 
-#led_1.strip_fill()
-led_1.led_gradient()
-led_1.led_show()
 
-time.sleep(2)
+# -----------------------------------------------------------------------------
 
-while(True):
-    led_1.make_anim()
+def main():
+    led_1 = LED_STRIP(20, 0, 2, color_red, color_yellow, True, "Mask")
+
+
+    #led_1.strip_fill()
+    led_1.led_gradient()
     led_1.led_show()
-    time.sleep(0.1)
 
+    time.sleep(2)
 
+    while(True):
+        led_1.make_anim()
+        led_1.led_show()
+        time.sleep(0.1)
+
+# End
+
+#------------------------------------------------------------------------------
+#--- Main
+#------------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    main()
