@@ -8,5 +8,7 @@
     "python.analysis.extraPaths": [
         ".vscode\\Pico-Stub\\stubs"
     ],
-    "python-envs.pythonProjects": []
+    "python-envs.pythonProjects": [],
+    "micropico.autoConnect": true,
+    "micropico.manualComDevice": "COM4"
 }
