@@ -4,61 +4,28 @@ from libs.neopixel import Neopixel
 
 
 transfer_mode = "PUT"
-numpix = 20
+numpix = 300
 
-strip = []
-
-strip.append(Neopixel(numpix, 0, 2, "GRB", 0.0001, transfer_mode))
-strip.append(Neopixel(numpix, 1, 3, "GRB", 0.0001, transfer_mode))
-strip.append(Neopixel(numpix, 2, 4, "GRB", 0.0001, transfer_mode))
-strip.append(Neopixel(numpix, 3, 5, "GRB", 0.0001, transfer_mode))
-strip.append(Neopixel(numpix, 4, 6, "GRB", 0.0001, transfer_mode))
-strip.append(Neopixel(numpix, 5, 7, "GRB", 0.0001, transfer_mode))
-strip.append(Neopixel(numpix, 6, 8, "GRB", 0.0001, transfer_mode))
-strip.append(Neopixel(numpix, 7, 9, "GRB", 0.0001, transfer_mode))
+strip_1 = Neopixel(numpix, 0, 2, "GRB", 0.0001, transfer_mode)
+strip_2 = Neopixel(numpix, 1, 3, "GRB", 0.0001, transfer_mode)
+strip_3 = Neopixel(numpix, 2, 4, "GRB", 0.0001, transfer_mode)
+strip_4 = Neopixel(numpix, 3, 5, "GRB", 0.0001, transfer_mode)
 
 
-color_off       = (  0,  0,  0)
-color_red       = ( 80,  0,  0)
-color_green     = (  0, 80,  0)
-color_blue      = (  0,  0, 80)
-color_yellow    = ( 50, 50,  0)
-color_default   = (  0,  0,  2)
-
-
-strip[0].fill(color_red)
-strip[1].fill(color_green)
-strip[2].fill(color_blue)
-strip[3].fill(color_yellow)
-strip[4].set_pixel_line_gradient(0, 19, color_red, color_yellow)
-strip[5].set_pixel_line_gradient(0, 19, color_yellow, color_blue)
-strip[6].set_pixel_line_gradient(0, 19, color_blue, color_yellow)
-strip[7].set_pixel_line_gradient(0, 19, color_yellow, color_red)
-
-counter = numpix
-
-def mask_stripe():
-    global counter
-    global numpix
-    strip[4].set_pixel_line_gradient(0, 19, color_red, color_yellow)
-    
-    if counter > 0:
-        strip[4].set_pixel_line(0, counter - 1 , color_default)
-    if counter < numpix - 2:
-        strip[4].set_pixel_line(counter + 3, numpix, color_default)
-    if counter > 0:
-        counter -= 1
-    else:
-        counter = numpix
+color_1 = (100,0,0)
+color_2 = (0,100,0)
+color_3 = (0,0,100)
+color_4 = (50,40,70)
+strip_1.fill(color_1)
+strip_2.fill(color_2)
+strip_3.fill(color_3)
+strip_4.fill(color_4)
 
 while(True):
     
-    #strip[3].rotate_right(1)
-    #strip[4].rotate_left(1)
+    strip_1.show()
+    strip_2.show()
+    strip_3.show()
+    strip_4.show()
 
-    mask_stripe()
-
-    for i in range(8):
-        strip[i].show()
-
-    time.sleep(0.3)
+    time.sleep(0.02)
