@@ -1,19 +1,30 @@
 # Led-Segment Klasse
 class Led_Segment:
     def __init__(self, uid, stripe_nr, index, num_led, direction=False):
-        self.uid = uid  # LED_Segment UID fortlaufend ab 1
-        self.stripe = stripe_nr  # LED_Stripe beginnt mit 1 (PIO-Sektion, Pin-Zuordnung)
-        self.index = index  # LED_Segment im Stripe beginnt mit 1
-        self.num_led = num_led  # Anzahl der LEDs im Segment
-        self.start_led = 0  # Start-Position beginnt mit 0
-        self.stop_led = 0  # Stop-Position beginnt mit 0
-        self.direction = direction  # Richtung: False → Von links nach rechts | True → Von rechts nach links
-        self.color_off = (0, 0, 0)
-        self.refresh = False  # Wurde das Led_Segment verändert
+        self.uid        = uid  # LED_Segment UID fortlaufend ab 1
+        self.stripe     = stripe_nr  # LED_Stripe beginnt mit 1 (PIO-Sektion, Pin-Zuordnung)
+        self.index      = index  # LED_Segment im Stripe beginnt mit 1
+        self.num_led    = num_led  # Anzahl der LEDs im Segment
+        self.start_led  = 0  # Start-Position beginnt mit 0
+        self.stop_led   = 0  # Stop-Position beginnt mit 0
+        self.direction  = direction  # Richtung: False → Von links nach rechts | True → Von rechts nach links
+        self.color_off  = (0, 0, 0)
+        self.refresh    = False  # Wurde das Led_Segment verändert
 
+class Stripe_CFG:
+    def __init__(self, uid, num_led, stripe_nr):
+        self.uid        = uid
+        self.num_led    = num_led
+        self.io_pin     = stripe_nr + 1     # Pin-Nummer Offset, Start mit GPIO-Pin 2
+
+class LED_Functions:
+    def __init__(self, uid, num, seg_list):
+        self.uid        = uid
+        self.num        = num
+        self.led_seg    = seg_list
 
 # Funktion, um alle Objekte mit einer bestimmten Eigenschaft zu finden
-def finde_objekte_mit_eigenschaft(objekte, eigenschaft_wert):
+def finde_objekte_mit_stripe(objekte, eigenschaft_wert):
     return [obj for obj in objekte if obj.stripe == eigenschaft_wert]
 
 stripe = []
@@ -38,6 +49,11 @@ stripe_cfg_2 = [
     Led_Segment(6, 2, 3, 8, False)   # 6. Segment
 ]
 
+functions = [
+    LED_Functions( 1, 1, [1,2,3]),
+    LED_Functions( 2, 2, [4]),
+    LED_Functions( 3, 3, [5])
+]
 # ==============================================================================
 
 # Objekte mit Eigenschaft 'X' finden
@@ -49,9 +65,9 @@ stripe_cfg_2 = [
 def do_this(value):
     segments = []
 
-    if value == "red":
+    if value == "Prod":
         segments = stripe_cfg_1
-    if value == "green":
+    if value == "Test":
         segments = stripe_cfg_2
 
     # Alle verschiedenen Eigenschaften ermitteln
@@ -61,7 +77,7 @@ def do_this(value):
 
     for value in eigenschaften_liste:
         #print(f'Value: {value}')
-        ergebnis = finde_objekte_mit_eigenschaft(segments, value)
+        ergebnis = finde_objekte_mit_stripe(segments, value)
         last_stop = 0
         for obj in ergebnis:
             #print(obj.stripe)
@@ -78,9 +94,9 @@ def do_this(value):
 
 
 def main():
-    do_this("red")
+    do_this("Test")
 
-    do_this("green")
+    do_this("Prod")
 
 # ------------------------------------------------------------------------------
 # --- Main
