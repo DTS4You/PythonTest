@@ -161,7 +161,7 @@ def cb_led_all(args):
     if len(args) < 1:
         print("Fehler: Benötige FarbWerte (z.B. 'led all on')")
         return
-    print("Alle LEDs auf Standardfarbe gesetzt.")
+    print("Alle LEDs auf Farbindex gesetzt.")
 
 def cb_led_clear(args):
     print("LEDs ausgeschaltet.")
@@ -176,7 +176,7 @@ parser.register("sys reboot", cb_sys_reboot, "Startet den Mikrocontroller neu")
 parser.register("sys info", cb_sys_info, "Zeigt Speicher- und Plattform-Infos")
 parser.register("sys break", cb_sys_break, "Setzt das System zurück")
 parser.register("set color", cb_set_color, "Setze Farbwert: <R> <G> <B>")
-parser.register("led all", cb_led_all, "Alle LEDs auf Farbwert setzen")
+parser.register("led all", cb_led_all, "Alle LEDs auf Farbindex setzen")
 parser.register("led set", cb_led_set, "Setzt LED-Farbe: <R> <G> <B>")
 parser.register("led clear", cb_led_clear, "Schaltet alle LEDs aus")
 
