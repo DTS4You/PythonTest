@@ -122,6 +122,11 @@ def cb_sys_reboot(args):
     print("System startet neu...")
     machine.reset()
 
+def cb_sys_break(args):
+    import sys
+    print("System wird unterbrochen. Beende das Programm...")
+    sys.exit()
+
 def cb_sys_info(args):
     import gc
     import os
@@ -141,6 +146,23 @@ async def cb_led_set(args):
     except ValueError:
         print("Fehler: Ungültige Zahlenwerte.")
 
+def cb_set_color(args):
+    if len(args) < 4:
+        print("Fehler: Benötige Farbindex und R G B Werte (z.B. 'set color 0 255 0 0')")
+        return
+    try:
+        index = int(args[0])
+        r, g, b = int(args[0]), int(args[1]), int(args[2])
+        print(f"Setze Index: {index} mit Farbwert R:{r} G:{g} B:{b}")
+    except ValueError:
+        print("Fehler: Ungültige Zahlenwerte.")
+
+def cb_led_all(args):
+    if len(args) < 1:
+        print("Fehler: Benötige FarbWerte (z.B. 'led all on')")
+        return
+    print("Alle LEDs auf Standardfarbe gesetzt.")
+
 def cb_led_clear(args):
     print("LEDs ausgeschaltet.")
 
@@ -150,8 +172,11 @@ def cb_led_clear(args):
 parser = CommandParser("MyRP2040-Controller")
 
 # Strukturierte Pfade registrieren
-parser.register("system reboot", cb_sys_reboot, "Startet den Mikrocontroller neu")
-parser.register("system info", cb_sys_info, "Zeigt Speicher- und Plattform-Infos")
+parser.register("sys reboot", cb_sys_reboot, "Startet den Mikrocontroller neu")
+parser.register("sys info", cb_sys_info, "Zeigt Speicher- und Plattform-Infos")
+parser.register("sys break", cb_sys_break, "Setzt das System zurück")
+parser.register("set color", cb_set_color, "Setze Farbwert: <R> <G> <B>")
+parser.register("led all", cb_led_all, "Alle LEDs auf Farbwert setzen")
 parser.register("led set", cb_led_set, "Setzt LED-Farbe: <R> <G> <B>")
 parser.register("led clear", cb_led_clear, "Schaltet alle LEDs aus")
 
