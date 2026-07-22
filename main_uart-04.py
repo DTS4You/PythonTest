@@ -152,20 +152,43 @@ def cb_set_color(args):
         return
     try:
         index = int(args[0])
+        r, g, b = int(args[1]), int(args[2]), int(args[3])
+        print(f"Setze Index: {index} mit Farbwert R:{r} G:{g} B:{b}")
+    except ValueError:
+        print("Fehler: Ungültige Zahlenwerte.")
+
+def cb_do_all(args):
+    if len(args) < 3:
+        print("Fehler: Benötige Modus (z.B. 'do all on')")
+        return
+    try:
+        index = int(args[0])
         r, g, b = int(args[0]), int(args[1]), int(args[2])
         print(f"Setze Index: {index} mit Farbwert R:{r} G:{g} B:{b}")
     except ValueError:
         print("Fehler: Ungültige Zahlenwerte.")
 
-def cb_led_all(args):
-    if len(args) < 1:
-        print("Fehler: Benötige FarbWerte (z.B. 'led all on')")
+def cb_do_obj(args):
+    if len(args) < 4:
+        print("Fehler: Benötige Index und Modus (z.B. 'do obj 2 on')")
         return
-    print("Alle LEDs auf Farbindex gesetzt.")
+    try:
+        index = int(args[0])
+        modus= int(args[1])
+        print(f"Objekt: {index} auf Modus: {modus}")
+    except ValueError:
+        print("Fehler: Ungültige Zahlenwerte.")
 
-def cb_led_clear(args):
-    print("LEDs ausgeschaltet.")
-
+def cb_test_led(args):
+    if len(args) < 4:
+        print("Fehler: Benötige Index und Modus (z.B. 'test led 3 on')")
+        return
+    try:
+        index = int(args[0])
+        modus= int(args[1])
+        print(f"Objekt: {index} auf Modus: {modus}")
+    except ValueError:
+        print("Fehler: Ungültige Zahlenwerte.")
 
 # --- 2. Parser aufbauen und registrieren ---
 
@@ -176,10 +199,11 @@ parser.register("sys reboot", cb_sys_reboot, "Startet den Mikrocontroller neu")
 parser.register("sys info", cb_sys_info, "Zeigt Speicher- und Plattform-Infos")
 parser.register("sys break", cb_sys_break, "Setzt das System zurück")
 parser.register("do all", cb_do_all, "Alle LEDs auf Wert <x> setzen")
-parser.register("set color", cb_set_color, "Setze Farbwert: <R> <G> <B>")
-parser.register("led all", cb_led_all, "Alle LEDs auf Farbindex setzen")
+parser.register("do obj", cb_do_obj, "Objekt: <n> mit Modus: <m> ausführen")
+parser.register("test led", cb_test_led, "Test LED: <n> mit Modus: <m> ")
+parser.register("set color", cb_set_color, "Setze Farbindex: <i> auf Farbwert: <R> <G> <B>")
 parser.register("led set", cb_led_set, "Setzt LED-Farbe: <R> <G> <B>")
-parser.register("led clear", cb_led_clear, "Schaltet alle LEDs aus")
+
 
 
 # --- 3. Hintergrund-Task simulieren ---
