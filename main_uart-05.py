@@ -1,6 +1,10 @@
 import sys
 import uasyncio as asyncio
 import select
+from machine import UART, Pin
+
+# UART wie gewohnt initialisieren
+uart = UART(0, baudrate=115200, tx=Pin(0), rx=Pin(1), rxbuf=256)
 
 class CommandParser:
     def __init__(self, name="CLI"):
@@ -81,6 +85,7 @@ async def cli_reader_task(parser: CommandParser):
     
     buffer = ""
     print(f"\n{parser.name} bereit. Tippe 'help' für Optionen.")
+    uart.write("> ".encode('utf-8'))
     sys.stdout.write("> ")
     
     while True:
