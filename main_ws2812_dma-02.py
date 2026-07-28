@@ -1,5 +1,3 @@
-# DMA
-#import sys
 import array
 import time
 import math
@@ -49,40 +47,6 @@ class WS2812Fast:
             dest_fifo = (0x50200010 + (i * 4)) if i < 4 else (0x50300010 + ((i - 4) * 4))
             mem32[self.DMA_BASE + (i * 0x40) + 0x04] = dest_fifo
 
-
-
-    def clear(self):
-        """ Leert den aktuellen Back-Buffer (alles Schwarz) """
-        addrs_ptr = uctypes.addressof(self.addrs_set0) if self.write_index == 0 else uctypes.addressof(self.addrs_set1)
-        self._clear_viper(addrs_ptr, self.leds_per_strip)
-
-    def fill(self):
-        """ Leert den aktuellen Back-Buffer (alles Schwarz) """
-        addrs_ptr = uctypes.addressof(self.addrs_set0) if self.write_index == 0 else uctypes.addressof(self.addrs_set1)
-        self._fill_viper(addrs_ptr, self.leds_per_strip)
-
-    @staticmethod
-    @micropython.viper
-
-    def _fill_viper(strip_addrs_ptr: ptr32, leds_per_strip: int):
-        for s in range(8):
-            buf_ptr = ptr32(strip_addrs_ptr[s])
-            for i in range(leds_per_strip):
-                r = 10
-                g = 10
-                b = 10
-                buf_ptr[i] = (g << 24) | (r << 16) | (b << 8)
-
-    @staticmethod
-    @micropython.viper
-
-    def _clear_viper(strip_addrs_ptr: ptr32, leds_per_strip: int):
-        for s in range(8):
-            buf_ptr = ptr32(strip_addrs_ptr[s])
-            for i in range(leds_per_strip):
-                buf_ptr[i] = 0
-
-
     def show(self):
         # Warten, falls DMA noch liest
         for i in range(8):
@@ -102,38 +66,6 @@ class WS2812Fast:
             mem32[base + 0x0C] = self.dma_configs[i]
             
         self.write_index = 1 - self.write_index
-
-    def cleanup(self):
-        """ Stoppt alle DMA-Kanäle und PIO State Machines sauber. """
-        
-        # 1. Alle DMA-Kanäle stoppen (Abort Bit setzen)
-        # Für jeden Kanal (0 bis 7) das ABORT Register (Offset 0x444 im DMA-Block) ansprechen
-        DMA_ABORT = self.DMA_BASE + 0x444
-        mem32[DMA_ABORT] = 0xFF  # Bit 0-7 = Maske für DMA Kanäle 0 bis 7
-        
-        # Warten, bis der Abort verarbeitet wurde (Bit wird von der Hardware wieder genullt)
-        while mem32[DMA_ABORT] != 0:
-            pass
-
-        # 2. DMA-Kanäle zurücksetzen/deaktivieren (CTRL_TRIG nullen)
-        for i in range(8):
-            ctrl_reg = self.DMA_BASE + (i * 0x40) + 0x0C
-            mem32[ctrl_reg] = 0
-
-        # 3. PIO State Machines stoppen & LEDs ausschalten
-        # Wir setzen zuerst alle LEDs auf Schwarz, bevor wir abschalten
-        self.clear()
-        self.show()
-        time.sleep_ms(1)  # Kurze Zeit geben zum Ausgeben
-        
-        for i in range(8):
-            # State Machine i über die rp2.StateMachine API stoppen
-            rp2.StateMachine(i).active(0)
-            
-            # Optional: PIO FIFO leeren
-            pio_base = 0x50200000 if i < 4 else 0x50300000
-            mem32[pio_base + 0x010 + ((i % 4) * 4)] = 0
-        
 
 # Globaler Lookup-Table für Sinus
 SIN_TABLE = array.array("b", [int(math.sin(i * 2 * math.pi / 256) * 127) for i in range(256)])
@@ -171,9 +103,6 @@ def render_viper(strip_addrs_ptr: ptr32, sin_tab_ptr: ptr8, t_int: int, leds_per
 leds = WS2812Fast(start_pin=2, leds_per_strip=250)
 t_counter = 0
 
-frame_time = 0.5
-
-
 # Zeiger vorbereiten
 sin_ptr = uctypes.addressof(SIN_TABLE)
 
@@ -187,19 +116,12 @@ try:
         else:
             addrs_ptr = uctypes.addressof(leds.addrs_set1)
             
-        leds.fill()
+        # Rendern direkt in den Speicher
+        render_viper(addrs_ptr, sin_ptr, t_counter, 250)
+        
+        # DMA Ausführen
         leds.show()
-        time.sleep(frame_time)
-        leds.clear()
-        leds.show()
-        time.sleep(frame_time)
         
         t_counter = (t_counter + 3) & 255
 except KeyboardInterrupt:
-    leds.clear()
-    leds.show()
-    leds.cleanup()
-    del leds
-    print("ENDE")
-    machine.reset()
-
+    pass
