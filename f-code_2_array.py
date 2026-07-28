@@ -11,7 +11,7 @@ def finde_objekte_mit_eigenschaft(objekte, eigenschaft_wert):
     return [obj for obj in objekte if obj.fcode == eigenschaft_wert]
 
 #==============================================================================
-# Objekte anlegen   (UID, Stripe, Index, Anzahl, Richtung)
+# Objekte anlegen   (F-Code, Stripe, Index)
 led_array = [
     Led_Array( 1, 4, 12),
     Led_Array( 2, 4, 11),
