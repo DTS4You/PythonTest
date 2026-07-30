@@ -167,17 +167,26 @@ def render_viper(strip_addrs_ptr: ptr32, sin_tab_ptr: ptr8, t_int: int, leds_per
             buf_ptr[i] = (g << 24) | (r << 16) | (b << 8)
 
 
-# --- Hauptschleife ---
-leds = WS2812Fast(start_pin=2, leds_per_strip=250)
-t_counter = 0
+
 
 frame_time = 0.5
 
+board_led       = Pin(25, Pin.OUT)
+board_switch    = Pin(24, Pin.IN, Pin.PULL_UP)
 
-# Zeiger vorbereiten
-sin_ptr = uctypes.addressof(SIN_TABLE)
+print("Programmstart")
+board_led.value(0)
+time.sleep(0.3)
+while(board_switch.value()):
+    #print("Warte auf Taste")
+    time.sleep(0.3)
+
+board_led.value(1)
 
 print("Starte Viper-beschleunigte Berechnung...")
+
+# --- Hauptschleife ---
+leds = WS2812Fast(start_pin=2, leds_per_strip=250)
 
 try:
     while True:
@@ -194,12 +203,12 @@ try:
         leds.show()
         time.sleep(frame_time)
         
-        t_counter = (t_counter + 3) & 255
 except KeyboardInterrupt:
     leds.clear()
     leds.show()
     leds.cleanup()
     del leds
+    board_led.value(0)
     print("ENDE")
     machine.reset()
 

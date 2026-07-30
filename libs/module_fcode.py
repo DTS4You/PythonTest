@@ -9,7 +9,6 @@ class Led_Array:
         self.stripe     = stripe            # LED_Stripe beginnt mit 1 (PIO-Sektion, Pin-Zuordnung)
         self.index      = index             # LED_Segment im Stripe beginnt mit 1
         
-
 #==============================================================================
 # Objekte anlegen   (F-Code, Stripe, Index)
 def make_fcode_list():
@@ -49,16 +48,10 @@ def make_fcode_list():
         Led_Array(20, 6, 8)
     ]
     return led_array
-
-
 #==============================================================================
-
 # Funktion, um alle Objekte mit einer bestimmten Eigenschaft zu finden
 def f_code_2_array(objekte, eigenschaft_wert):
     return [obj for obj in objekte if obj.fcode == eigenschaft_wert]
-
-
-
 
 def do_this(value):
 
@@ -69,7 +62,6 @@ def do_this(value):
     for obj in ergebnis:
         print(obj.stripe, obj.index)
     
-
 def main():
 
     do_this(1)
