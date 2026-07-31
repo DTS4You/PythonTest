@@ -16,35 +16,26 @@ class HWDEBUG:
     def write_output(self, value):
         self.led_board.value(value)
 
-    
-#==============================================================================
-# Test-Funktion
-def do_this(value):
-
-    pass    
 
 #------------------------------------------------------------------------------
-# Main-Funktion
+# Main-Funktion -> Aufruf nur im Standalone-Modus
 #------------------------------------------------------------------------------
 def main():
 
+    print("Programmstart aus dem Modul selber...")
     hwdebug = HWDEBUG()
-
-
 
     try:
         while True:
             if hwdebug.read_input():
-                do_this(1)
                 hwdebug.write_output(1)
             else:
-                do_this(0)
                 hwdebug.write_output(0)
         
     except KeyboardInterrupt:
         
         hwdebug.write_output(0)
-        print("Programm wurde durch Benutzer abgebrochen.")
+        print("Programm wurde durch Benutzer abgebrochen...")
         machine.reset()
     
     print("### ENDE ###")
