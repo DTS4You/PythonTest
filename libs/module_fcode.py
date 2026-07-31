@@ -54,14 +54,16 @@ def f_code_2_array(objekte, eigenschaft_wert):
     return [obj for obj in objekte if obj.fcode == eigenschaft_wert]
 
 
+#==============================================================================
+# Test-Funktion
 def do_this(value):
 
     f_code_list = make_fcode_list()
 
     ergebnis = f_code_2_array(f_code_list, value)
-    print(len(ergebnis))
+    print("Anzahl:", len(ergebnis))
     for obj in ergebnis:
-        print(obj.stripe, obj.index)
+        print("Stripe:", obj.stripe, "Index:", obj.index)
 
 #------------------------------------------------------------------------------
 # Main-Funktion
@@ -69,7 +71,8 @@ def do_this(value):
 def main():
 
     do_this(1)
-    do_this(2)
+    do_this(17)
+
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
