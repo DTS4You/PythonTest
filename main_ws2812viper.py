@@ -31,16 +31,17 @@ async def background_heartbeat():
 #------------------------------------------------------------------------------
 async def main_loop():
 
-    frame_time = 0.04
+    frame_time = 0.1
     print("Starte Viper-beschleunigte Berechnung...")
     while True:
         # Aktuelle Adressen des Ziel-Buffers holen
-        if leds.write_index == 0:
-            addrs_ptr = uctypes.addressof(leds.addrs_set0)
-        else:
-            addrs_ptr = uctypes.addressof(leds.addrs_set1)
+        #if leds.write_index == 0:
+        #    addrs_ptr = uctypes.addressof(leds.addrs_set0)
+        #else:
+        #    addrs_ptr = uctypes.addressof(leds.addrs_set1)
         #----------------------------------------------------------------------    
-        leds.fill()
+        leds.set_pixel(4,4)
+        leds.set_pixel(4,12)
         leds.show()
         await asyncio.sleep(frame_time)
         leds.clear()

@@ -57,14 +57,26 @@ class WS2812Fast:
 
 
     def clear(self):
-        """ Leert den aktuellen Back-Buffer (alles Schwarz) """
         addrs_ptr = uctypes.addressof(self.addrs_set0) if self.write_index == 0 else uctypes.addressof(self.addrs_set1)
         self._clear_viper(addrs_ptr, self.leds_per_strip)
 
     def fill(self):
-        """ Leert den aktuellen Back-Buffer (alles Schwarz) """
         addrs_ptr = uctypes.addressof(self.addrs_set0) if self.write_index == 0 else uctypes.addressof(self.addrs_set1)
         self._fill_viper(addrs_ptr, self.leds_per_strip)
+
+    def set_pixel(self, stripe, index):
+        addrs_ptr = uctypes.addressof(self.addrs_set0) if self.write_index == 0 else uctypes.addressof(self.addrs_set1)
+        self._pixel_viper(addrs_ptr, self.leds_per_strip, stripe, index)
+
+    @staticmethod
+    @micropython.viper
+
+    def _pixel_viper(strip_addrs_ptr: ptr32, leds_per_strip: int, stripe: int, index: int):
+        buf_ptr = ptr32(strip_addrs_ptr[stripe])
+        r = 10
+        g = 10
+        b = 10
+        buf_ptr[index] = (g << 24) | (r << 16) | (b << 8)
 
     @staticmethod
     @micropython.viper
@@ -188,7 +200,7 @@ def main():
             else:
                 addrs_ptr = uctypes.addressof(leds.addrs_set1)
                 
-            leds.fill()
+            leds.set_pixel(4,5)
             leds.show()
             time.sleep(frame_time)
             leds.clear()
