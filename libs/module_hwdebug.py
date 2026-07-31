@@ -30,7 +30,24 @@ def main():
 
     hwdebug = HWDEBUG()
 
-    hwdebug.write_output(1)
+
+
+    try:
+        while True:
+            if hwdebug.read_input():
+                do_this(1)
+                hwdebug.write_output(1)
+            else:
+                do_this(0)
+                hwdebug.write_output(0)
+        
+    except KeyboardInterrupt:
+        
+        hwdebug.write_output(0)
+        print("Programm wurde durch Benutzer abgebrochen.")
+        machine.reset()
+    
+    print("### ENDE ###")
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
