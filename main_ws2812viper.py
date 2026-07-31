@@ -54,7 +54,6 @@ async def main_loop():
 #-----------------------------------------------------------------------------
 async def main():
     print("Starte Main-Loop und Hintergrund-Task...")
-
     await asyncio.gather(
         main_loop(),
         background_heartbeat()
