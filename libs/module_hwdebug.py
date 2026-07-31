@@ -4,7 +4,7 @@
 ###############################################################################
 from machine import Pin
 
-class hwdebug:
+class HWDEBUG:
     def __init__(self):
         self.led_board      = Pin(25, Pin.OUT)
         self.switch_board   = Pin(24, Pin.IN, Pin.PULL_UP)
@@ -21,21 +21,16 @@ class hwdebug:
 # Test-Funktion
 def do_this(value):
 
-    f_code_list = make_fcode_list()
-
-    ergebnis = f_code_2_array(f_code_list, value)
-    print("Anzahl:", len(ergebnis))
-    for obj in ergebnis:
-        print("Stripe:", obj.stripe, "Index:", obj.index)
+    pass    
 
 #------------------------------------------------------------------------------
 # Main-Funktion
 #------------------------------------------------------------------------------
 def main():
 
-    do_this(1)
-    do_this(17)
+    hwdebug = HWDEBUG()
 
+    hwdebug.write_output(1)
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
