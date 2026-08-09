@@ -173,8 +173,9 @@ def render_viper(strip_addrs_ptr: ptr32, sin_tab_ptr: ptr8, t_int: int, leds_per
             buf_ptr[i] = (g << 24) | (r << 16) | (b << 8)
 
 
-
-
+#------------------------------------------------------------------------------
+#--- Main
+#------------------------------------------------------------------------------
 frame_time = 0.5
 
 board_led       = Pin(25, Pin.OUT)
@@ -183,6 +184,7 @@ board_switch    = Pin(24, Pin.IN, Pin.PULL_UP)
 print("Programmstart")
 board_led.value(0)
 time.sleep(0.3)
+print("Warte auf USR-Taste...")
 while(board_switch.value()):
     #print("Warte auf Taste")
     time.sleep(0.3)

@@ -363,7 +363,7 @@ class WS2812_8WAY_DMA:
 
 if __name__ == "__main__":
     leds = WS2812_8WAY_DMA(
-        first_pin=0,          # GPIO0..GPIO7
+        first_pin=2,          # GPIO0..GPIO7
         leds_per_strip=150,   # 150 LEDs pro Ausgang
         sm_id=0,
         dma_channel=0,
