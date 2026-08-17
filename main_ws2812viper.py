@@ -26,6 +26,14 @@ async def background_heartbeat():
         blink_state = not blink_state
         await asyncio.sleep(blink_time)
 
+led_offset = 3
+
+def draw_line():
+    for s in range(8):
+        for i in range(3):
+            leds.set_pixel(s,i + led_offset)
+        
+
 #------------------------------------------------------------------------------
 # Main-Loop als asynchroner Task
 #------------------------------------------------------------------------------
@@ -40,8 +48,7 @@ async def main_loop():
         #else:
         #    addrs_ptr = uctypes.addressof(leds.addrs_set1)
         #----------------------------------------------------------------------    
-        leds.set_pixel(4,4)
-        leds.set_pixel(4,12)
+        draw_line()
         leds.show()
         await asyncio.sleep(frame_time)
         leds.clear()
