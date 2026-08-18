@@ -1,0 +1,57 @@
+from machine import Pin
+from micropython import schedule
+
+class BusSlave:
+
+    def __init__(self):
+
+        self.data = [
+            Pin(2, Pin.IN),
+            Pin(3, Pin.IN),
+            Pin(4, Pin.IN),
+            Pin(5, Pin.IN)
+        ]
+
+        self.wr = Pin(6, Pin.IN, Pin.PULL_UP)
+        self.rd = Pin(7, Pin.IN, Pin.PULL_UP)
+
+        self.rx_fifo = []
+
+        self.wr.irq(
+            trigger=Pin.IRQ_FALLING,
+            handler=self._wr_irq
+        )
+
+        self.rd.irq(
+            trigger=Pin.IRQ_FALLING | Pin.IRQ_RISING,
+            handler=self._rd_irq
+        )
+
+    def _read_nibble(self):
+        v = 0
+
+        for i in range(4):
+            if self.data[i].value():
+                v |= (1 << i)
+
+        return v
+
+    def _wr_irq(self, pin):
+        schedule(self._wr_handler, 0)
+
+    def _wr_handler(self, dummy):
+        nibble = self._read_nibble()
+        self.rx_fifo.append(nibble)
+
+    def _rd_irq(self, pin):
+
+        if pin.value() == 0:
+            schedule(self._rd_start, 0)
+        else:
+            schedule(self._rd_stop, 0)
+
+    def _rd_start(self, dummy):
+        pass
+
+    def _rd_stop(self, dummy):
+        pass
