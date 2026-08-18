@@ -73,8 +73,8 @@ class WS2812Fast:
 
     def _pixel_viper(strip_addrs_ptr: ptr32, leds_per_strip: int, stripe: int, index: int):
         buf_ptr = ptr32(strip_addrs_ptr[stripe])
-        r = 10
-        g = 10
+        r = 0
+        g = 0
         b = 10
         buf_ptr[index] = (g << 24) | (r << 16) | (b << 8)
 
