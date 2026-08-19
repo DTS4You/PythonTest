@@ -44,6 +44,15 @@ def main():
 
     for i in range(len(anim_obj)):
         print("Objekt:", i ,"Modified:", anim_obj[i].modifyed)
+
+
+    string = ""
+    for i in range(10):
+        string = string + "0"
+
+    print(string)
+    print("LEDSTREIEFN: " + "-" + string + "-")
+
     print("--- Ende ---")
 
 
