@@ -162,10 +162,10 @@ def load_or_create_objects(filepath, anim_patterns):
         obj = ANIM_OBJ(
             stripe=item["stripe"],
             start=item["start"],
-            length=item.get("length", item.get("lenght", 10)),
+            length=item["length"],
             pattern=anim_patterns[pat_idx],
-            default_color_index=item.get("default_color_index", 0),
-            direction=item.get("direction", True),
+            default_color_index=item["default_color_index"],
+            direction=item["direction"]
         )
         anim_objects.append(obj)
 
