@@ -55,7 +55,7 @@ def get_list_from_array(object_value):
 
 
 # --- Hauptprogramm ---
-filepath = "funktionen.json"
+filepath = "cfg_fcode_array.json"
 
 obj_array = load_or_create_json(filepath)
 
