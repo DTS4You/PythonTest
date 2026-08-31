@@ -42,7 +42,7 @@ async def background_heartbeat():
         #print("Hintergrund-Task: Status-LED blinken")
         hwdebug.write_output(blink_state)
         blink_state = not blink_state
-        await asyncio.sleep(1)
+        await asyncio.sleep_ms(mycfg.blink_time)
 
 #------------------------------------------------------------------------------
 # Main-Loop als asynchroner Task
