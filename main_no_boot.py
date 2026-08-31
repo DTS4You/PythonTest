@@ -1,8 +1,8 @@
 ###############################################################################
-### Hardware Debug Modul
 ### V 1.00
 ###############################################################################
 import uasyncio as asyncio
+import libs.modul_config as mycfg
 
 load_modul_hwdebug      = True
 load_modul_anim_obj     = True
@@ -71,7 +71,7 @@ async def main():
 #------------------------------------------------------------------------------
 #--- Ab hier startet das Programm
 #-----------------------------------------------------------------------------
-def main():
+def pre_main():
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
@@ -85,6 +85,7 @@ def main():
 # ------------------------------------------------------------------------------
 
 if __name__ == "__main__":
+    mycfg.load_config()
     if load_modul_hwdebug:
         import_module_hwdebug()
     if load_modul_anim_obj:
@@ -92,6 +93,6 @@ if __name__ == "__main__":
     if load_modul_color_index:
         import_modul_color_index()
 
-    main()      # Start der Main-Funktion
+    pre_main()      # Start der Pre-Main-Funktion
 
 # =============================================================================

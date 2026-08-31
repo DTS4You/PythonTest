@@ -36,48 +36,87 @@ class COLOR_OBJ:
 
 # Standarddaten mit den Schlüsseln r, g, b
 DEFAULT_COLOR_DATA = [
-    {"index":  0, "r":   0, "g":   0, "b":   0, "brightness": 1},
-    {"index":  1, "r":   0, "g":   0, "b":   3, "brightness": 1},
-    {"index":  2, "r": 100, "g": 100, "b": 100, "brightness": 1},
-    {"index":  3, "r":  50, "g":  50, "b":  50, "brightness": 1},
-    {"index":  4, "r":   0, "g": 200, "b":   0, "brightness": 1},
-    {"index":  5, "r":   0, "g":  10, "b":   0, "brightness": 1},
-    {"index":  6, "r":  10, "g":  10, "b":  10, "brightness": 1},
-    {"index":  7, "r":  10, "g":  10, "b":  10, "brightness": 1},
-    {"index":  8, "r":   0, "g":  20, "b":   0, "brightness": 1},
-    {"index":  9, "r":   0, "g":  50, "b":   0, "brightness": 1},
-    {"index": 10, "r":   0, "g": 150, "b":   0, "brightness": 1},
-    {"index": 11, "r":   0, "g":   0, "b":  20, "brightness": 1},
-    {"index": 12, "r":   0, "g":   0, "b":  50, "brightness": 1},
-    {"index": 13, "r":   0, "g":   0, "b": 150, "brightness": 1},
-    {"index": 14, "r":  20, "g":   0, "b":   0, "brightness": 1},
-    {"index": 15, "r":  70, "g":   0, "b":   0, "brightness": 1},
+    {"index": 0, "r": 0, "g": 0, "b": 0, "brightness": 1},
+    {"index": 1, "r": 0, "g": 0, "b": 3, "brightness": 1},
+    {"index": 2, "r": 100, "g": 100, "b": 100, "brightness": 1},
+    {"index": 3, "r": 50, "g": 50, "b": 50, "brightness": 1},
+    {"index": 4, "r": 0, "g": 200, "b": 0, "brightness": 1},
+    {"index": 5, "r": 0, "g": 10, "b": 0, "brightness": 1},
+    {"index": 6, "r": 10, "g": 10, "b": 10, "brightness": 1},
+    {"index": 7, "r": 10, "g": 10, "b": 10, "brightness": 1},
+    {"index": 8, "r": 0, "g": 20, "b": 0, "brightness": 1},
+    {"index": 9, "r": 0, "g": 50, "b": 0, "brightness": 1},
+    {"index": 10, "r": 0, "g": 150, "b": 0, "brightness": 1},
+    {"index": 11, "r": 0, "g": 0, "b": 20, "brightness": 1},
+    {"index": 12, "r": 0, "g": 0, "b": 50, "brightness": 1},
+    {"index": 13, "r": 0, "g": 0, "b": 150, "brightness": 1},
+    {"index": 14, "r": 20, "g": 0, "b": 0, "brightness": 1},
+    {"index": 15, "r": 70, "g": 0, "b": 0, "brightness": 1},
 ]
 
 
+def save_colors_to_json(filepath, color_index):
+    """Speichert die Liste formatiert in einer JSON-Datei."""
+    lines = ["["]
+    for i, obj in enumerate(color_index):
+        comma = "," if i < len(color_index) - 1 else ""
+        line = (
+            f'    {{ "index": {obj.index:2d}, '
+            f'"r": {obj.red:3d}, '
+            f'"g": {obj.green:3d}, '
+            f'"b": {obj.blue:3d}, '
+            f'"brightness": {obj.brightness} }}{comma}'
+        )
+        lines.append(line)
+    lines.append("]")
+
+    formatted_json = "\n".join(lines)
+
+    with open(filepath, "w") as file:
+        file.write(formatted_json)
+
+
 def load_or_create_colors(filepath):
-    # 1. Datei anlegen, falls sie fehlt oder 0 Bytes groß (leer) ist
-    if not os.path.exists(filepath) or os.path.getsize(filepath) == 0:
+    # 1. Prüfen, ob die Datei existiert und nicht leer (0 Bytes) ist
+    is_empty_or_missing = True
+    try:
+        stat_info = os.stat(filepath)
+        if stat_info[6] > 0:  # stat_info[6] entspricht der Dateigröße in Bytes
+            is_empty_or_missing = False
+    except OSError:
+        is_empty_or_missing = True
+
+    # Falls Datei fehlt oder leer ist: Standarddaten schreiben
+    if is_empty_or_missing:
         print(
             f"Datei '{filepath}' fehlt oder ist leer. Erstelle mit Standarddaten..."
         )
-        with open(filepath, "w", encoding="utf-8") as file:
-            json.dump(DEFAULT_COLOR_DATA, file, indent=4)
+        # Erstelle temporäre Liste aus Obj für formatierte Speicherung
+        default_objs = [
+            COLOR_OBJ(
+                item["index"],
+                item["r"],
+                item["g"],
+                item["b"],
+                item.get("brightness", 1),
+            )
+            for item in DEFAULT_COLOR_DATA
+        ]
+        save_colors_to_json(filepath, default_objs)
 
     # 2. JSON einlesen (inklusive Fehlerabfang bei ungültigem JSON)
     try:
-        with open(filepath, "r", encoding="utf-8") as file:
+        with open(filepath, "r") as file:
             data = json.load(file)
-    except json.JSONDecodeError:
+    except (ValueError, OSError):
         print(
-            f"Warnung: '{filepath}' ist ungültig/beschädigt. Verwende Standarddaten."
+            f"Warnung: '{filepath}' ist ungültig oder beschädigt. Verwende Standarddaten."
         )
         data = DEFAULT_COLOR_DATA
 
     # 3. Liste mit COLOR_OBJ Objekten erzeugen
     color_index = []
     for item in data:
-        # Hier werden r, g, b aus dem JSON den Argumenten red, green, blue übergeben
         obj = COLOR_OBJ(
             index=item["index"],
             red=item["r"],
@@ -88,21 +127,6 @@ def load_or_create_colors(filepath):
         color_index.append(obj)
 
     return color_index
-
-
-def save_colors_to_json(filepath, color_index):
-    data = [
-        {
-            "index": obj.index,
-            "r": obj.red,
-            "g": obj.green,
-            "b": obj.blue,
-            "brightness": obj.brightness
-        }
-        for obj in color_index
-    ]
-    with open(filepath, "w", encoding="utf-8") as file:
-        json.dump(data, file, indent=4)
 
 
 def int32_to_4bytes(val, little_endian=True):
@@ -126,14 +150,14 @@ def main():
     print("\n--- Test COLOR_OBJ ---")
     for obj in color_index:
         print(
-            f"Index: {obj.index}, R: {obj.red}, G: {obj.green}, B: {obj.blue}, Brightness: {obj.brightness}, RGB32: {hex(obj.rgb32)}"
+            f"Index: {obj.index:2d}, R: {obj.red:3d}, G: {obj.green:3d}, B: {obj.blue:3d}, Brightness: {obj.brightness}, RGB32: {hex(obj.rgb32)}"
         )
 
     print("\n--- Test int32_to_4bytes ---")
     for obj in color_index:
         b0, b1, b2, b3 = int32_to_4bytes(obj.rgb32, little_endian=True)
         print(
-            f"Index: {obj.index}, RGB32: {hex(obj.rgb32)}, Bytes: [{b0}, {b1}, {b2}, {b3}]"
+            f"Index: {obj.index:2d}, RGB32: {hex(obj.rgb32)}, Bytes: [{b0:3d}, {b1:3d}, {b2:3d}, {b3:3d}]"
         )
 
     print("--- Ende ---")

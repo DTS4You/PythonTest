@@ -1,8 +1,8 @@
 {
     "frame_time":   20,
     "blink_time":  500,
-    "board_modus":          "Master",
-    "modul_hwdebug":        true,
-    "modul_anim_obj":       true,
-    "modul_color_index":    true
+    "board_modus": "Master",
+    "modul_hwdebug": true,
+    "modul_anim_obj": true,
+    "modul_color_index": true
 }
