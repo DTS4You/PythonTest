@@ -30,8 +30,6 @@ def import_modul_color_index():
     filepath = "cfg_colors.json"
     color_index = mycolor.load_or_create_colors(filepath)
 
-
-
 #------------------------------------------------------------------------------
 # --- Hintergrund-Task simulieren ---
 #------------------------------------------------------------------------------
@@ -56,7 +54,7 @@ async def main_loop():
             #hwdebug.write_output(0)
             pass
 
-        await asyncio.sleep(0.03)  # Kurze Pause, um die CPU nicht zu blockieren
+        await asyncio.sleep_ms(mycfg.frame_time)  # Kurze Pause, um die CPU nicht zu blockieren
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
