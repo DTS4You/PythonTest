@@ -1,0 +1,11 @@
+Ruhezustand     High-Nibble       Zwischenpause     Low-Nibble       Ende
+Data (GP10-13)  ========== X===[ Bit 7..4 ]== X =============== X==[ Bit 3..0 ]== X ======
+                           |                  |                 |                 |
+STROBE_HIGH(14) ───────────┐                  ┌───────────────────────────────────────── (Ruhe: HIGH)
+                           └──────────────────┘ (Puls: LOW, ~50µs)
+                                              |
+STROBE_LOW (15) ──────────────────────────────┼─────────────────┐                 ┌───── (Ruhe: HIGH)
+                                              |                 └─────────────────┘ (Puls: LOW, ~50µs)
+                                              |                                   |
+Empfänger-Aktion                            [Read]                              [Read]
+
