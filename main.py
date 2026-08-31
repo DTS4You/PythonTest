@@ -4,27 +4,33 @@
 ###############################################################################
 import uasyncio as asyncio
 
-load_module_hwdebug     = True
-load_module_ws2812      = False
-load_module_serial      = False
-load_module_xgio        = False 
+load_modul_hwdebug      = True
+load_modul_anim_obj     = True
+load_modul_color_index  = True
+ 
 
 def import_module_hwdebug():
     global hwdebug
     import libs.module_hwdebug as myhwdebug
     hwdebug = myhwdebug.HWDEBUG()
 
-def import_module_ws2812():
-    #import libs.module_ws2812 as myws2812
-    pass
+def import_modul_anim_obj():
+    global anim_obj
+    import libs.modul_anim_obj as myanim
+    patterns_file   = "cfg_patterns.json"
+    objects_file    = "cfg_anim_objects.json"
+    # 1. Zuerst Patterns laden
+    anim_pattern = myanim.load_or_create_patterns(patterns_file)
+    # 2. Dann Animationsobjekte laden und mit den loaded Patterns verknüpfen
+    anim_obj = myanim.load_or_create_objects(objects_file, anim_pattern)
 
-def import_module_serial():
-    #import libs.module_serial as myserial
-    pass
+def import_modul_color_index():
+    global color_index
+    import libs.modul_color_index as mycolor
+    filepath = "cfg_colors.json"
+    color_index = mycolor.load_or_create_colors(filepath)
 
-def import_module_xgio():
-    #import libs.module_xgio as myxgio
-    pass
+
 
 #------------------------------------------------------------------------------
 # --- Hintergrund-Task simulieren ---
@@ -79,14 +85,13 @@ def main():
 # ------------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    if load_module_hwdebug:
+    if load_modul_hwdebug:
         import_module_hwdebug()
-    if load_module_ws2812:
-        import_module_ws2812()
-    if load_module_serial:
-        import_module_serial()
-    if load_module_xgio:
-        import_module_xgio()
+    if load_modul_anim_obj:
+        import_modul_anim_obj()
+    if load_modul_color_index:
+        import_modul_color_index()
+
     main()      # Start der Main-Funktion
 
 # =============================================================================
