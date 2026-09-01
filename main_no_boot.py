@@ -1,10 +1,11 @@
 ###############################################################################
 ### V 1.00
 ###############################################################################
-import uasyncio as asyncio
+#import uasyncio as asyncio             # MicroPython RP2040
+import asyncio                          # Python 3.11
 import libs.modul_config as mycfg
 
-load_modul_hwdebug      = True
+load_modul_hwdebug      = False
 load_modul_anim_obj     = True
 load_modul_color_index  = True
  
@@ -38,9 +39,9 @@ async def background_heartbeat():
     blink_state = False
     while True:
         #print("Hintergrund-Task: Status-LED blinken")
-        hwdebug.write_output(blink_state)
+        #hwdebug.write_output(blink_state)      # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED zu blinken
         blink_state = not blink_state
-        await asyncio.sleep_ms(mycfg.blink_time)
+        await asyncio.sleep(mycfg.blink_time/1000)
 
 #------------------------------------------------------------------------------
 # Main-Loop als asynchroner Task
@@ -48,13 +49,13 @@ async def background_heartbeat():
 async def main_loop():
 
     while True:
-        if hwdebug.read_input():
-            hwdebug.write_output(1)
-        else:
-            #hwdebug.write_output(0)
-            pass
+        #if hwdebug.read_input():
+        #    hwdebug.write_output(1)            # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED einzuschalten
+        #else:
+        #    #hwdebug.write_output(0)           # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED auszuschalten
+        #    pass
 
-        await asyncio.sleep_ms(mycfg.frame_time)  # Kurze Pause, um die CPU nicht zu blockieren
+        await asyncio.sleep(mycfg.frame_time/1000)  # Kurze Pause, um die CPU nicht zu blockieren
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
@@ -73,9 +74,9 @@ def pre_main():
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        hwdebug.write_output(0)
+        #hwdebug.write_output(0)    # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED auszuschalten
         print("Programm wurde durch Benutzer abgebrochen.")
-        machine.reset()
+        #machine.reset()            # Nur bei MicroPython auf dem RP2040 aktivieren, um den Controller neu zu starten
 #------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
@@ -83,7 +84,9 @@ def pre_main():
 # ------------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    mycfg.load_config()
+
+    mycfg.load_config()             # Lade Konfiguration aus cfg_config.json
+
     if load_modul_hwdebug:
         import_module_hwdebug()
     if load_modul_anim_obj:
