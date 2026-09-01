@@ -4,13 +4,13 @@ import os
 
 class COLOR_OBJ:
     def __init__(self, index, red, green, blue, brightness=1):
-        self.index = index
-        self.red = red
-        self.green = green
-        self.blue = blue
-        self.dummy = 0
+        self.index      = index
+        self.red        = red
+        self.green      = green
+        self.blue       = blue
+        self.dummy      = 0
         self.brightness = brightness
-        self.rgb32 = 0
+        self.rgb32      = 0
         self.bytes_to_int32()
 
     def bytes_to_int32(self, little_endian=True):

@@ -10,26 +10,16 @@ class ANIM_PATTERN:
 
 
 class ANIM_OBJ:
-    def __init__(
-        self,
-        stripe,
-        start,
-        length,
-        pattern,
-        default_color_index=0,
-        direction=True,
-    ):
-        self.stripe = stripe
-        self.start = start
-        self.led_length = length
-        self.color_def = default_color_index
-        self.pattern = pattern
-        self.position = 0
-        self.direction = (
-            direction  # True = rechts -> links / False = links -> rechts
-        )
-        self.modulo = 0
-        self.modified = False
+    def __init__(self, stripe, start, length, pattern, default_color_index=0, direction=True):
+        self.stripe         = stripe
+        self.start          = start
+        self.led_length     = length
+        self.color_def      = default_color_index
+        self.pattern        = pattern
+        self.position       = 0
+        self.direction      = direction             # True = rechts -> links / False = links -> rechts
+        self.modulo         = 0
+        self.modified       = False
 
         self.led_array = self.pattern.led_pattern + [
             self.color_def
