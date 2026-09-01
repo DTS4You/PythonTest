@@ -11,13 +11,13 @@ class ANIM_PATTERN:
 
 class ANIM_OBJ:
     def __init__(self, stripe, start, length, pattern, default_color_index=0, direction=True):
-        self.stripe         = stripe
-        self.start          = start
+        self.stripe         = stripe                        # Stripe Nummmer zählt von 1 bis N -> muss zum Board mit 0 starten
+        self.start          = start                         # Startposition im Stripe Start bei 1
         self.led_length     = length
         self.color_def      = default_color_index
         self.pattern        = pattern
         self.position       = 0
-        self.direction      = direction             # True = rechts -> links / False = links -> rechts
+        self.direction      = direction                     # True = rechts -> links / False = links -> rechts
         self.modulo         = 0
         self.modified       = False
 
