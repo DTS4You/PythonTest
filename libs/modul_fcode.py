@@ -53,12 +53,27 @@ def get_list_from_array(object_value):
         return [object_value]
     return []
 
+def get_array_from_obj(object, value):
+    return get_list_from_array(object[value].array)
 
-# --- Hauptprogramm ---
-filepath = "cfg_fcode_array.json"
+#------------------------------------------------------------------------------
+# Main-Funktion für Modultests
+#------------------------------------------------------------------------------
+def main():
+    print("Modultest: Funktions-Codes in Array umwandeln")
+    filepath = "cfg_fcode_array.json"
+    fcode_array = load_or_create_json(filepath)
 
-obj_array = load_or_create_json(filepath)
+    for obj in fcode_array:
+        print(f"{obj.name}: Länge: {len(get_list_from_array(obj.array))} -> {get_list_from_array(obj.array)}")
 
-for obj in obj_array:
-    print(f"{obj.name}: Länge: {len(get_list_from_array(obj.array))} -> {get_list_from_array(obj.array)}")
+    print("\nTest: Zugriff auf das erste Objekt im Array")
 
+    print("Array -> ", fcode_array[0].name, ":", get_list_from_array(fcode_array[0].array))
+
+    print("\nModultest abgeschlossen.")
+
+#==============================================================================
+if __name__ == "__main__":
+    main()
+#==============================================================================

@@ -2,13 +2,16 @@ import json
 import os
 import time
 
-
+#------------------------------------------------------------------------------
+# Klasse für Animationsmuster
+#------------------------------------------------------------------------------
 class ANIM_PATTERN:
     def __init__(self, led_pattern):
         self.led_pattern = led_pattern
         self.length = len(self.led_pattern)
-
-
+#-----------------------------------------------------------------------------
+# Klasse für Animationsobjekte
+#-----------------------------------------------------------------------------
 class ANIM_OBJ:
     def __init__(self, stripe, start, length, pattern, default_color_index=0, direction=True):
         self.stripe         = stripe                        # Stripe Nummmer zählt von 1 bis N -> muss zum Board mit 0 starten
@@ -50,7 +53,9 @@ class ANIM_OBJ:
             self.position += 1
 
         return self.act_array[self.pattern.length :]
-
+#------------------------------------------------------------------------------
+# Klasse für Farbobjekte
+#------------------------------------------------------------------------------
 class COLOR_OBJ:
     def __init__(self, index, red, green, blue, brightness=1):
         self.index      = index
@@ -81,8 +86,9 @@ class COLOR_OBJ:
             )
 
         return self.rgb32
-
+#-----------------------------------------------------------------------------
 # Standarddaten für die Animationsobjekte
+#-----------------------------------------------------------------------------
 DEFAULT_OBJECTS = [
     {"stripe":  1, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe":  2, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
@@ -102,13 +108,17 @@ DEFAULT_OBJECTS = [
     {"stripe": 14, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe": 15, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
 ]
+#-----------------------------------------------------------------------------
 # Standarddaten für die Patterns
+#-----------------------------------------------------------------------------
 DEFAULT_PATTERNS = [
-    [8, 9, 10, 9, 8],  # Index 0 (Grün)
-    [14, 15, 14],  # Index 1 (Rot)
-    [11, 12, 13, 12, 11],  # Index 2 (Blau)
+    [8, 9, 10, 9, 8],               # Index 0 (Grün)
+    [14, 15, 14],                   # Index 1 (Rot)
+    [11, 12, 13, 12, 11],           # Index 2 (Blau)
 ]
+#-----------------------------------------------------------------------------
 # Standarddaten für die Farben
+#-----------------------------------------------------------------------------
 DEFAULT_COLOR_DATA = [
     {"index":  0, "r":   0, "g":   0, "b":   0, "brightness": 1},
     {"index":  1, "r":   0, "g":   0, "b":   3, "brightness": 1},
@@ -128,7 +138,6 @@ DEFAULT_COLOR_DATA = [
     {"index": 15, "r":  70, "g":   0, "b":   0, "brightness": 1},
 ]
 
-
 def load_or_create_patterns(filepath):
     """Lädt Patterns aus JSON oder erstellt Standarddatei."""
     is_empty_or_missing = True
@@ -139,9 +148,7 @@ def load_or_create_patterns(filepath):
         is_empty_or_missing = True
 
     if is_empty_or_missing:
-        print(
-            f"Datei '{filepath}' fehlt/leer. Erstelle mit Standarddaten..."
-        )
+        print(f"Datei '{filepath}' fehlt/leer. Erstelle mit Standarddaten...")
         with open(filepath, "w") as file:
             json.dump(DEFAULT_PATTERNS, file)
 
@@ -153,7 +160,6 @@ def load_or_create_patterns(filepath):
         data = DEFAULT_PATTERNS
 
     return [ANIM_PATTERN(pat) for pat in data]
-
 
 def save_objects_to_json(filepath, objects_data):
     """Speichert Objekte in einzeiliger Form ab."""
@@ -169,7 +175,6 @@ def save_objects_to_json(filepath, objects_data):
     with open(filepath, "w") as file:
         file.write("\n".join(lines))
 
-
 def load_or_create_objects(filepath, anim_patterns):
     """Lädt Objekt-Konfigurationen aus JSON oder erstellt Standarddatei."""
     is_empty_or_missing = True
@@ -180,9 +185,7 @@ def load_or_create_objects(filepath, anim_patterns):
         is_empty_or_missing = True
 
     if is_empty_or_missing:
-        print(
-            f"Datei '{filepath}' fehlt/leer. Erstelle mit Standarddaten..."
-        )
+        print(f"Datei '{filepath}' fehlt/leer. Erstelle mit Standarddaten...")
         save_objects_to_json(filepath, DEFAULT_OBJECTS)
 
     try:
@@ -296,7 +299,9 @@ def fill_array_with_color(array, color_index):
     for i in range(len(array)):
         array[i] = color_index[array[i]].rgb32
     return array
-
+#------------------------------------------------------------------------------
+# Main-Funktion für Modultests
+#------------------------------------------------------------------------------
 def main():
 
     debug_anim  = False
