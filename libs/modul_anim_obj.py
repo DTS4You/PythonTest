@@ -306,6 +306,7 @@ def main():
 
     debug_anim  = False
     debug_color = False
+    debug_fill  = False
 
     print("--- Start Color Test ---")
     color_file = "cfg_colors.json"
@@ -328,6 +329,9 @@ def main():
     anim_pattern = load_or_create_patterns(patterns_file)
     anim_obj = load_or_create_objects(objects_file, anim_pattern)
     print("Objekte erzeugt")
+
+    print("Anzahl der LED-Objekte: ", len(anim_obj))
+
     if debug_anim:
         print("Pattern 0 Länge:", anim_obj[0].pattern.length)
         print("Array Länge Gesamt:", anim_obj[0].arr_length)
@@ -339,11 +343,13 @@ def main():
             time.sleep(0.2)
     print("--- Ende Animation Test ---")
 
-    print("--- Start Fill Array Test ---")
-    test_array = [0, 1, 2, 3, 2, 1, 0]
-    fill_array_with_color(test_array, color_index)
-    print("Testarray gefüllt:", test_array)
-    print("--- Ende Fill Array Test ---")
+    if debug_fill:
+        print("--- Start Fill Array Test ---")
+        test_array = [0, 1, 2, 3, 2, 1, 0]
+        fill_array_with_color(test_array, color_index)
+        print("Testarray gefüllt:", test_array)
+        print("--- Ende Fill Array Test ---")
+
 
 #==============================================================================
 if __name__ == "__main__":

@@ -72,6 +72,10 @@ else:
     print("[INIT] ## Modul F-Code wird nicht geladen ##")
 
 
+def new_input_action():
+    print("Anzahl der LED-Objekte: ",len(anim_obj))
+    for i in range(len(anim_obj)):
+        print("Loop: ", i)
 
 #------------------------------------------------------------------------------
 # --- Hintergrund-Task simulieren ---
@@ -85,6 +89,8 @@ async def background_heartbeat():
         #hwdebug.write_output(blink_state)      # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED zu blinken
         blink_state = not blink_state
         print("Blink....Blink")
+        #print(myfcode.get_array_from_obj(fcode_array, 1))
+        new_input_action()
         await asyncio.sleep(CONFIG["blink_time"]/1000)  # Kurze Pause, um die CPU nicht zu blockieren
 
 #------------------------------------------------------------------------------
