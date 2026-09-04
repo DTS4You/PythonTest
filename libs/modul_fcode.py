@@ -71,6 +71,9 @@ def main():
 
     print("Array -> ", fcode_array[0].name, ":", get_list_from_array(fcode_array[0].array))
 
+    for i in get_array_from_obj(fcode_array, 6):
+        print(i)
+
     print("\nModultest abgeschlossen.")
 
 #==============================================================================

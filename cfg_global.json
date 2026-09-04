@@ -1,7 +1,8 @@
 {
-    "frame_time":   50,
+    "frame_time":   20,
     "blink_time":  500,
     "board_modus": "Master",
-    "load_modul_hwdebug": true,
-    "load_modul_anim_obj": true
+    "load_modul_hwdebug": false,
+    "load_modul_anim_obj": true,
+    "load_modul_fcode": true
 }
