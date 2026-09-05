@@ -1,8 +1,8 @@
 ###############################################################################
 ### V 1.00
 ###############################################################################
-#import uasyncio as asyncio              # MicroPython RP2040
-import asyncio                         # Python 3.11
+import uasyncio as asyncio              # MicroPython RP2040
+#import asyncio                         # Python 3.11
 import json
 
 #==============================================================================
@@ -23,7 +23,8 @@ def load_global_config(filepath="config.json"):
         "board_modus": "Master",
         "load_modul_hwdebug": False,
         "load_modul_anim_obj": True,
-        "load_modul_fcode": True
+        "load_modul_fcode": True,
+        "led_offset": 1,
     }
     
     try:
@@ -72,11 +73,27 @@ else:
     print("[INIT] ## Modul F-Code wird nicht geladen ##")
 
 
-def new_input_action():
-    print("Anzahl der LED-Objekte: ",len(anim_obj))
+def new_input_action(input_string):
+    offset = CONFIG["led_offset"]
+    treffer_werte = []
+    # Prüfen ob do,all,def oder do,obj,x,blink
+    if input_string == "do,all,def":
+        treffer_werte = []
+    elif input_string.startswith("do,obj,"):
+        parts = input_string.split(",")
+        if len(parts) == 4 and parts[2].isdigit():
+            obj_value = (int(parts[2]))
+        else:
+            print(f"Ungültiger Input-String: {input_string}")
+    # Array auslesen 
+    treffer_werte = myfcode.get_array_from_obj(fcode_array, obj_value)
+    print(f"Treffer-Werte: {treffer_werte}")
     for i in range(len(anim_obj)):
-        print("Loop: ", i)
-
+        z = i + offset
+        if z in treffer_werte:
+            print(f"Treffer: Objekt {z} -> Animation starten")
+        else:
+            print(f"Objekt {z} -> auf Default setzen")
 #------------------------------------------------------------------------------
 # --- Hintergrund-Task simulieren ---
 #------------------------------------------------------------------------------
@@ -85,12 +102,15 @@ async def background_heartbeat():
     print("Starte Hintergrund-Task: Status-LED blinken...")
     print(f"Blink_Time: {CONFIG["blink_time"]}")
     blink_state = False
+    debug_counter = 0
     while True:
         #hwdebug.write_output(blink_state)      # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED zu blinken
         blink_state = not blink_state
         print("Blink....Blink")
         #print(myfcode.get_array_from_obj(fcode_array, 1))
-        new_input_action()
+        new_input_action("do,obj,5,blink")  # Beispielaufruf der Funktion mit einem Test-Input
+        debug_counter += 1
+        print(f"Loop: Hintergrund-Task läuft... (Zähler: {debug_counter})")
         await asyncio.sleep(CONFIG["blink_time"]/1000)  # Kurze Pause, um die CPU nicht zu blockieren
 
 #------------------------------------------------------------------------------
