@@ -10,10 +10,10 @@
     {"stripe":  9, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
     {"stripe": 10, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
     {"stripe": 11, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
-    {"stripe": 11, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
-    {"stripe": 12, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
     {"stripe": 12, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
     {"stripe": 13, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
-    {"stripe": 14, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
-    {"stripe": 15, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true}
+    {"stripe": 14, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
+    {"stripe": 15, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
+    {"stripe": 16, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
+    {"stripe": 17, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true}
 ]

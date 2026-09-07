@@ -101,12 +101,12 @@ DEFAULT_OBJECTS = [
     {"stripe":  9, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe": 10, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe": 11, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
-    {"stripe": 11, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
-    {"stripe": 12, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe": 12, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe": 13, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
-    {"stripe": 14, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
+    {"stripe": 14, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe": 15, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
+    {"stripe": 16, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
+    {"stripe": 17, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
 ]
 #-----------------------------------------------------------------------------
 # Standarddaten für die Patterns
