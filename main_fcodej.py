@@ -25,6 +25,8 @@ def load_global_config(filepath="config.json"):
         "load_modul_anim_obj": True,
         "load_modul_fcode": True,
         "led_offset": 1,
+        "obj_offset": 1,
+        "pattern_offset": 1
     }
     
     try:
