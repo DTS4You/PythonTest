@@ -10,23 +10,21 @@ import json
 CONFIG = {}
 
 def load_global_config(filepath="config.json"):
-    """
-    Liest die JSON-Datei ein und befüllt das globale CONFIG-Dictionary.
-    Einschließlich Fallbacks bei Dateifehlern.
-    """
+
     global CONFIG
     
     # Standardwerte (Fallbacks), falls die JSON-Datei fehlt oder unvollständig ist
     defaults = {
         "frame_time": 20,
         "blink_time": 500,
+        "debug_time": 1000,
         "board_modus": "Master",
-        "load_modul_hwdebug": False,
+        "load_modul_hwdebug": True,
         "load_modul_anim_obj": True,
         "load_modul_fcode": True,
-        "led_offset": 1,
-        "obj_offset": 1,
-        "pattern_offset": 1
+        "offset_led": 1,
+        "offset_obj": 1,
+        "offset_pattern": 1
     }
     
     try:
@@ -56,6 +54,8 @@ if CONFIG["load_modul_anim_obj"]:
     print("[INIT] -> Modul Animationsobjekte wird geladen...")
     global anim_obj
     import libs.modul_anim_obj as myanim
+    color_file = "cfg_colors.json"
+    color_index = myanim.load_or_create_colors(color_file)
     patterns_file   = "cfg_patterns.json"
     objects_file    = "cfg_anim_objects.json"
     # 1. Zuerst Patterns laden
@@ -106,14 +106,14 @@ async def background_heartbeat():
     blink_state = False
     debug_counter = 0
     while True:
-        #hwdebug.write_output(blink_state)      # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED zu blinken
+        hwdebug.write_output(blink_state)      # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED zu blinken
         blink_state = not blink_state
         print("Blink....Blink")
         #print(myfcode.get_array_from_obj(fcode_array, 1))
         new_input_action("do,obj,5,blink")  # Beispielaufruf der Funktion mit einem Test-Input
         debug_counter += 1
         print(f"Loop: Hintergrund-Task läuft... (Zähler: {debug_counter})")
-        await asyncio.sleep(CONFIG["blink_time"]/1000)  # Kurze Pause, um die CPU nicht zu blockieren
+        await asyncio.sleep_ms(CONFIG["blink_time"])    # Kurze Pause, um die CPU nicht zu blockieren
 
 #------------------------------------------------------------------------------
 # Main-Loop als asynchroner Task
@@ -127,7 +127,7 @@ async def main_loop():
         #    #hwdebug.write_output(0)           # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED auszuschalten
         #    pass
 
-        await asyncio.sleep(CONFIG["blink_time"]/1000)  # Kurze Pause, um die CPU nicht zu blockieren
+        await asyncio.sleep(CONFIG["debug_time"])       # Kurze Pause, um die CPU nicht zu blockieren
 #------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------
@@ -146,9 +146,9 @@ def pre_main():
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        #hwdebug.write_output(0)    # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED auszuschalten
+        hwdebug.write_output(0)    # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED auszuschalten
         print("Programm wurde durch Benutzer abgebrochen.")
-        #machine.reset()            # Nur bei MicroPython auf dem RP2040 aktivieren, um den Controller neu zu starten
+        machine.reset()            # Nur bei MicroPython auf dem RP2040 aktivieren, um den Controller neu zu starten
 #------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
