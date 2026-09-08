@@ -1,6 +1,6 @@
 [
     {"stripe":  3, "start":  1, "length": 10, "pattern_index": 1, "default_color_index": 1, "direction": true},
-    {"stripe":  4, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
+    {"stripe":  4, "start":  1, "length": 20, "pattern_index": 0, "default_color_index": 1, "direction": true},
     {"stripe":  5, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
     {"stripe":  6, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},
     {"stripe":  7, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": true},

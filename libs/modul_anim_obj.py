@@ -341,13 +341,16 @@ def main():
 
     print("Anzahl der LED-Objekte: ", len(anim_obj))
 
+    anim_number = 1
+    anim_steps  = 40
     if debug_anim:
-        print("Pattern 0 Länge:", anim_obj[0].pattern.length)
-        print("Array Länge Gesamt:", anim_obj[0].arr_length)
+        print("Pattern Länge:", anim_obj[anim_number].pattern.length)
+        print("Array Länge Gesamt:", anim_obj[anim_number].arr_length)
+        print("Board Port:", anim_obj[anim_number].stripe)
 
-        for _ in range(20):
+        for _ in range(anim_steps):
             print(
-                f"Objekt Pos: {anim_obj[0].position:02d} | Array: {anim_obj[0].do_anim_step()}"
+                f"Objekt Pos: {anim_obj[anim_number].position:02d} | Array: {anim_obj[anim_number].do_anim_step()}"
             )
             time.sleep(0.2)
     print("--- Ende Animation Test ---")
