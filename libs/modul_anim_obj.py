@@ -94,25 +94,21 @@ class COLOR_OBJ:
 # Standarddaten für die Animationsobjekte
 #-----------------------------------------------------------------------------
 DEFAULT_OBJECTS = [
-    {"stripe":  3, "start":  1, "length": 10, "pattern_index": 1, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe":  4, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe":  5, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe":  6, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe":  7, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe":  8, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe": 10, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe": 11, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe": 12, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe": 13, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe": 13, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe": 14, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe": 14, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe": 15, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe": 16, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe": 14, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe": 14, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe": 15, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"stripe": 16, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False}
+    {"id":  1, "stripe":  3, "start":  1, "length": 10, "pattern_index": 1, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id":  2, "stripe":  4, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id":  3, "stripe":  5, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id":  4, "stripe":  6, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id":  5, "stripe":  7, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id":  6, "stripe":  8, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id":  7, "stripe": 10, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id":  8, "stripe": 11, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id":  9, "stripe": 12, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id": 10, "stripe": 13, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id": 11, "stripe": 13, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id": 12, "stripe": 14, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id": 13, "stripe": 14, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id": 14, "stripe": 15, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
+    {"id": 15, "stripe": 16, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False}
 ]
 #-----------------------------------------------------------------------------
 # Standarddaten für die Patterns
