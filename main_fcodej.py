@@ -45,7 +45,7 @@ load_global_config("cfg_global.json")
 if CONFIG["load_modul_hwdebug"]:
     print("[INIT] -> Modul Hardware-Debug wird geladen...")
     global hwdebug
-    import libs.module_hwdebug as myhwdebug
+    import libs.modul_hwdebug as myhwdebug
     hwdebug = myhwdebug.HWDEBUG()
 else:
     print("[INIT] ## Modul Hardware-Debug wird nicht geladen ##")
