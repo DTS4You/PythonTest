@@ -21,6 +21,7 @@ class ANIM_OBJ:
         self.pattern        = pattern
         self.position       = 0
         self.direction      = direction                     # True = rechts -> links / False = links -> rechts
+        self.toggle_dir     = False
         self.modulo         = 0
         self.modified       = False
         self.led_array      = self.pattern.led_pattern + [self.color_def] * self.length
@@ -46,9 +47,11 @@ class ANIM_OBJ:
             # Links-Rotation
             self.act_array = self.led_array[n:] + self.led_array[:n]
 
-        # Position hochzählen/zurücksetzen
+        # Position hochzählen/zurücksetzen/Richtung umdrehen
         if self.position >= self.arr_length:
             self.position = 0
+            if self.toggle_dir:
+                self.direction = not self.direction
         else:
             self.position += 1
 
@@ -341,8 +344,9 @@ def main():
 
     print("Anzahl der LED-Objekte: ", len(anim_obj))
 
-    anim_number = 1
-    anim_steps  = 40
+    anim_number     = 1
+    anim_steps      = 100
+    anim_obj[anim_number].toggle_dir = False
     if debug_anim:
         print("Pattern Länge:", anim_obj[anim_number].pattern.length)
         print("Array Länge Gesamt:", anim_obj[anim_number].arr_length)

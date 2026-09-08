@@ -1,0 +1,9 @@
+Open:
+- Start und Stop Anim_Object
+- Next Anim_Object
+- Step Size -> eventuell mit Nachkommawerten 
+
+Close:
+- Anim_Object Array Rotate left and right
+- Anim_Object Array Toggle Direction
+
