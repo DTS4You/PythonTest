@@ -16,16 +16,15 @@ class ANIM_OBJ:
     def __init__(self, stripe, start, length, pattern, default_color_index=0, direction=True):
         self.stripe         = stripe                        # Stripe Nummmer zählt von 1 bis N -> muss zum Board mit 0 starten
         self.start          = start                         # Startposition im Stripe Start bei 1
-        self.length         = length
+        self.led_length     = length
         self.color_def      = default_color_index
         self.pattern        = pattern
         self.position       = 0
         self.direction      = direction                     # True = rechts -> links / False = links -> rechts
-        self.toggle_dir     = False
         self.modulo         = 0
         self.modified       = False
-        self.led_array      = self.pattern.led_pattern + [self.color_def] * self.length
-        self.arr_length     = self.length + self.pattern.length
+        self.led_array      = self.pattern.led_pattern + [self.color_def] * self.led_length
+        self.arr_length     = self.led_length + self.pattern.length
         self.act_array      = self.led_array
 
     def get_modulo(self):
@@ -47,11 +46,9 @@ class ANIM_OBJ:
             # Links-Rotation
             self.act_array = self.led_array[n:] + self.led_array[:n]
 
-        # Position hochzählen/zurücksetzen/Richtung umdrehen
+        # Position hochzählen/zurücksetzen
         if self.position >= self.arr_length:
             self.position = 0
-            if self.toggle_dir:
-                self.direction = not self.direction
         else:
             self.position += 1
 
@@ -93,21 +90,23 @@ class COLOR_OBJ:
 # Standarddaten für die Animationsobjekte
 #-----------------------------------------------------------------------------
 DEFAULT_OBJECTS = [
-    {"stripe":  3, "start":  1, "length": 10, "pattern_index": 1, "default_color_index": 1, "direction": True},
+    {"stripe":  1, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
+    {"stripe":  2, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
+    {"stripe":  3, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe":  4, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe":  5, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe":  6, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe":  7, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe":  8, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
+    {"stripe":  9, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe": 10, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe": 11, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
+    {"stripe": 11, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe": 12, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
+    {"stripe": 12, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe": 13, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
-    {"stripe": 13, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe": 14, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
-    {"stripe": 14, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
     {"stripe": 15, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True},
-    {"stripe": 16, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True}
 ]
 #-----------------------------------------------------------------------------
 # Standarddaten für die Patterns
@@ -295,17 +294,6 @@ def int32_to_4bytes(val, little_endian=True):
     else:
         return b3, b2, b1, b0  # MSB -> LSB
 
-def int32_to_rgb(val, little_endian=True):
-    b0 = val & 0xFF
-    b1 = (val >> 8) & 0xFF
-    b2 = (val >> 16) & 0xFF
-
-    if little_endian:
-        return b0, b1, b2  # LSB -> MSB
-    else:
-        return b2, b1, b0  # MSB -> LSB
-
-
 def fill_array_with_color(array, color_index):
     """Füllt ein Array mit den RGB32-Werten aus dem Farbindex."""
     for i in range(len(array)):
@@ -316,7 +304,7 @@ def fill_array_with_color(array, color_index):
 #------------------------------------------------------------------------------
 def main():
 
-    debug_anim  = True
+    debug_anim  = False
     debug_color = False
     debug_fill  = False
 
@@ -344,17 +332,13 @@ def main():
 
     print("Anzahl der LED-Objekte: ", len(anim_obj))
 
-    anim_number     = 1
-    anim_steps      = 100
-    anim_obj[anim_number].toggle_dir = False
     if debug_anim:
-        print("Pattern Länge:", anim_obj[anim_number].pattern.length)
-        print("Array Länge Gesamt:", anim_obj[anim_number].arr_length)
-        print("Board Port:", anim_obj[anim_number].stripe)
+        print("Pattern 0 Länge:", anim_obj[0].pattern.length)
+        print("Array Länge Gesamt:", anim_obj[0].arr_length)
 
-        for _ in range(anim_steps):
+        for _ in range(20):
             print(
-                f"Objekt Pos: {anim_obj[anim_number].position:02d} | Array: {anim_obj[anim_number].do_anim_step()}"
+                f"Objekt Pos: {anim_obj[0].position:02d} | Array: {anim_obj[0].do_anim_step()}"
             )
             time.sleep(0.2)
     print("--- Ende Animation Test ---")
