@@ -13,11 +13,12 @@ class ANIM_PATTERN:
 # Klasse für Animationsobjekte
 #-----------------------------------------------------------------------------
 class ANIM_OBJ:
-    def __init__(self, stripe, start, length, pattern, default_color_index=0, direction=True, toggle_en=False):
+    def __init__(self, stripe, start, length, pattern, color_def_index=0, color_off_index=0, direction=True, toggle_en=False):
         self.stripe         = stripe                        # Stripe Nummmer zählt von 1 bis N -> muss zum Board mit 0 starten
         self.start          = start                         # Startposition im Stripe Start bei 1
         self.length         = length                        # Länge des Objektes    
-        self.color_def      = default_color_index
+        self.color_def      = color_def_index           # Color Index für "Vorgabe"
+        self.color_off      = color_off_index               # Color Index für "Aus"
         self.pattern        = pattern
         self.position       = 0
         self.direction      = direction                     # True = rechts -> links / False = links -> rechts
@@ -48,7 +49,7 @@ class ANIM_OBJ:
             # Links-Rotation
             self.act_array = self.led_array[n:] + self.led_array[:n]
 
-        # Position hochzählen/zurücksetzen/Richtung umdrehen
+        # Position hochzählen/zurücksetzen bei direction / toggle_en -> Richtung immer wieder umdrehen am Ende
         if self.position >= self.arr_length:
             self.position = 0
             if self.toggle_en:
@@ -94,21 +95,21 @@ class COLOR_OBJ:
 # Standarddaten für die Animationsobjekte
 #-----------------------------------------------------------------------------
 DEFAULT_OBJECTS = [
-    {"id":  1, "stripe":  3, "start":  1, "length": 10, "pattern_index": 1, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id":  2, "stripe":  4, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id":  3, "stripe":  5, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id":  4, "stripe":  6, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id":  5, "stripe":  7, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id":  6, "stripe":  8, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id":  7, "stripe": 10, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id":  8, "stripe": 11, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id":  9, "stripe": 12, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id": 10, "stripe": 13, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id": 11, "stripe": 13, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id": 12, "stripe": 14, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id": 13, "stripe": 14, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id": 14, "stripe": 15, "start":  1, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False},
-    {"id": 15, "stripe": 16, "start": 20, "length": 10, "pattern_index": 0, "default_color_index": 1, "direction": True, "toggle_en": False}
+    {"id":  1, "stripe":  3, "start":  1, "length": 10, "pattern": 1, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  2, "stripe":  4, "start":  1, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  3, "stripe":  5, "start":  1, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  4, "stripe":  6, "start":  1, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  5, "stripe":  7, "start":  1, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  6, "stripe":  8, "start":  1, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  7, "stripe": 10, "start":  1, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  8, "stripe": 11, "start":  1, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  9, "stripe": 12, "start":  1, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id": 10, "stripe": 13, "start":  1, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id": 11, "stripe": 13, "start": 20, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id": 12, "stripe": 14, "start":  1, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id": 13, "stripe": 14, "start": 20, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id": 14, "stripe": 15, "start":  1, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id": 15, "stripe": 16, "start": 20, "length": 10, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False}
 ]
 #-----------------------------------------------------------------------------
 # Standarddaten für die Patterns
