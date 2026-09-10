@@ -57,13 +57,18 @@ class ANIM_OBJ:
                 # Links-Rotation
                 self.act_array = self.led_array[n:] + self.led_array[:n]
 
-            # Position hochzählen/zurücksetzen bei direction / toggle_en -> Richtung immer wieder umdrehen am Ende
-            if self.position >= self.arr_length:
-                self.position = 0
-                if self.toggle_en:
-                    self.direction = not self.direction
-            else:
+            if self.position < 0:
+                # Wenn Position kleiner 0 dann nur Array-Default zurückgeben und Position hochzählen
                 self.position += 1
+                return [self.color_def] * self.length
+            else:
+                # Position hochzählen/zurücksetzen bei direction / toggle_en -> Richtung immer wieder umdrehen am Ende
+                if self.position >= self.arr_length:
+                    self.position = 0
+                    if self.toggle_en:
+                        self.direction = not self.direction
+                else:
+                    self.position += 1
 
             return self.act_array[self.pattern.length :]
         else:
@@ -105,21 +110,21 @@ class COLOR_OBJ:
 # Standarddaten für die Animationsobjekte
 #-----------------------------------------------------------------------------
 DEFAULT_OBJECTS = [
-    {"id":  1, "stripe":  3, "start":  1, "length": 10, "pregap": 0, "pattern": 1, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id":  2, "stripe":  4, "start":  1, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id":  3, "stripe":  5, "start":  1, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id":  4, "stripe":  6, "start":  1, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id":  5, "stripe":  7, "start":  1, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id":  6, "stripe":  8, "start":  1, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id":  7, "stripe": 10, "start":  1, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id":  8, "stripe": 11, "start":  1, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id":  9, "stripe": 12, "start":  1, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id": 10, "stripe": 13, "start":  1, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id": 11, "stripe": 13, "start": 20, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id": 12, "stripe": 14, "start":  1, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id": 13, "stripe": 14, "start": 20, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id": 14, "stripe": 15, "start":  1, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
-    {"id": 15, "stripe": 16, "start": 20, "length": 10, "pregap": 0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False}
+    {"id":  1, "stripe":  3, "start":  1, "length": 10, "pregap": -15, "pattern": 1, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  2, "stripe":  4, "start":  1, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  3, "stripe":  5, "start":  1, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  4, "stripe":  6, "start":  1, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  5, "stripe":  7, "start":  1, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  6, "stripe":  8, "start":  1, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  7, "stripe": 10, "start":  1, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  8, "stripe": 11, "start":  1, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id":  9, "stripe": 12, "start":  1, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id": 10, "stripe": 13, "start":  1, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id": 11, "stripe": 13, "start": 20, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id": 12, "stripe": 14, "start":  1, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id": 13, "stripe": 14, "start": 20, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id": 14, "stripe": 15, "start":  1, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False},
+    {"id": 15, "stripe": 16, "start": 20, "length": 10, "pregap":   0, "pattern": 0, "color_def": 1, "color_off": 0, "direction": True, "toggle_en": False}
 ]
 #-----------------------------------------------------------------------------
 # Standarddaten für die Patterns
@@ -181,7 +186,7 @@ def save_objects_to_json(filepath, objects_data):
     for i, item in enumerate(objects_data):
         comma = "," if i < count - 1 else ""
         lines.append(
-            f'    {{ "id": {item["id"]:2d},"stripe": {item["stripe"]:2d}, "start": {item["start"]:2d}, "length": {item["length"]:2d}, "pregap": {item["pregap"]:6d}, "pattern": {item["pattern"]}, "color_def": {item["color_def"]}, "color_off": {item["color_off"]}, "direction": {str(item["direction"]).lower()}, "toggle_en": {str(item["toggle_en"]).lower()} }}{comma}'
+            f'    {{ "id": {item["id"]:2d},"stripe": {item["stripe"]:2d}, "start": {item["start"]:2d}, "length": {item["length"]:2d}, "pregap": {item["pregap"]:4d}, "pattern": {item["pattern"]}, "color_def": {item["color_def"]}, "color_off": {item["color_off"]}, "direction": {str(item["direction"]).lower()}, "toggle_en": {str(item["toggle_en"]).lower()} }}{comma}'
         )
     lines.append("]")
 
