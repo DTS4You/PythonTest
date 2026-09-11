@@ -13,22 +13,30 @@ class ANIM_PATTERN:
 # Klasse für Animationsobjekte
 #-----------------------------------------------------------------------------
 class ANIM_OBJ:
-    def __init__(self, stripe, start, length, pregap, pattern, color_def=1, color_off=0, direction=True, toggle_en=False):
+    def __init__(self, id, stripe, start, length, pregap, pattern, color_index, color_def=1, color_off=0, direction=True, toggle_en=False):
+        self.id             = id
         self.stripe         = stripe                        # Stripe Nummmer zählt von 1 bis N -> muss zum Board mit 0 starten
         self.start          = start                         # Startposition im Stripe Start bei 1
         self.length         = length                        # Länge des Objektes    
         self.color_def      = color_def                     # Color Index für "Vorgabe"
         self.color_off      = color_off                     # Color Index für "Aus"
         self.pattern        = pattern                       # Animations Muster als Array aus Index-Farbwerten
+        self.color_index    = color_index                   # Color Index Objekt
         self.position       = pregap                        # 0 oder Offset als Positionsvorgabe -> negative Werte verzögern den Start                              
         self.direction      = direction                     # True = rechts -> links / False = links -> rechts
         self.toggle_en      = toggle_en                     # Toggle der Richtung nach jedem Durchlauf
         self.run_state      = False                         # True = Animation läuft / False = Animation gestoppt
         self.modulo         = 0
         self.modified       = False
-        self.led_array      = self.pattern.led_pattern + [self.color_def] * self.length
         self.arr_length     = self.length + self.pattern.length
+        self.led_array      = self.pattern.led_pattern + [self.color_def] * self.length
+        self.color_fill()
         self.act_array      = self.led_array
+
+    def color_fill(self):
+        for i, wert in enumerate(self.led_array):
+            print(self.id, i , wert, self.color_index[wert].rgb32)
+            self.led_array[i] = self.color_index[wert].rgb32
 
     def get_modulo(self):
         self.modulo = self.position % len(self.led_array)
@@ -44,7 +52,7 @@ class ANIM_OBJ:
             self.run_state = False
             self.position  = 0
 
-    def do_anim_step(self):
+    def do_anim_update(self):
         if self.run_state:
             arr_len = len(self.led_array)
             n = self.position % arr_len
@@ -60,7 +68,7 @@ class ANIM_OBJ:
             if self.position < 0:
                 # Wenn Position kleiner 0 dann nur Array-Default zurückgeben und Position hochzählen
                 self.position += 1
-                return [self.color_def] * self.length
+                return [self.color_index[self.color_def].rgb32] * self.length       # Array mit RGB32 Wert aus Color-Index[Default] zurückgeben
             else:
                 # Position hochzählen/zurücksetzen bei direction / toggle_en -> Richtung immer wieder umdrehen am Ende
                 if self.position >= self.arr_length:
@@ -72,7 +80,7 @@ class ANIM_OBJ:
 
             return self.act_array[self.pattern.length :]
         else:
-            return [self.color_off] * self.length
+            return [self.color_index[self.color_off].rgb32] * self.length           # Array mit RGB32 Wert aus Color-Index[Off] zurückgeben
 #------------------------------------------------------------------------------
 # Klasse für Farbobjekte
 #------------------------------------------------------------------------------
@@ -193,7 +201,7 @@ def save_objects_to_json(filepath, objects_data):
     with open(filepath, "w") as file:
         file.write("\n".join(lines))
 
-def load_or_create_objects(filepath, anim_patterns):
+def load_or_create_objects(filepath, anim_patterns, color_index):
     """Lädt Objekt-Konfigurationen aus JSON oder erstellt Standarddatei."""
     is_empty_or_missing = True
     try:
@@ -217,11 +225,13 @@ def load_or_create_objects(filepath, anim_patterns):
     for item in data:
         pat_idx = item["pattern"]
         obj = ANIM_OBJ(
+            id=item["id"],
             stripe=item["stripe"],
             start=item["start"],
             length=item["length"],
             pregap=item["pregap"],
             pattern=anim_patterns[pat_idx],
+            color_index=color_index,
             color_def=item["color_def"],
             color_off=item["color_off"],
             direction=item["direction"],
@@ -325,20 +335,20 @@ def int32_to_rgb(val, little_endian=True):
     else:
         return b2, b1, b0  # MSB -> LSB
 
-
 def fill_array_with_color(array, color_index):
     """Füllt ein Array mit den RGB32-Werten aus dem Farbindex."""
     for i in range(len(array)):
         array[i] = color_index[array[i]].rgb32
     return array
+
 #------------------------------------------------------------------------------
 # Main-Funktion für Modultests
 #------------------------------------------------------------------------------
 def main():
 
     debug_anim  = True
-    debug_color = False
-    debug_fill  = False
+    debug_color = True
+    debug_fill  = True
 
     print("--- Start Color Test ---")
     color_file = "cfg_colors.json"
@@ -347,11 +357,11 @@ def main():
     if debug_color:
         print("\n--- Test COLOR_OBJ ---")
         for obj in color_index:
-            print(f"Index: {obj.index:2d}, R: {obj.red:3d}, G: {obj.green:3d}, B: {obj.blue:3d}, Brightness: {obj.brightness}, RGB32: {hex(obj.rgb32)}")
+            print(f"Index: {obj.id:2d}, R: {obj.red:3d}, G: {obj.green:3d}, B: {obj.blue:3d}, Brightness: {obj.brightness}, RGB32: {hex(obj.rgb32)}")
         print("\n--- Test int32_to_4bytes ---")
         for obj in color_index:
             b0, b1, b2, b3 = int32_to_4bytes(obj.rgb32, little_endian=True)
-            print(f"Index: {obj.index:2d}, RGB32: {hex(obj.rgb32)}, Bytes: [{b0:3d}, {b1:3d}, {b2:3d}, {b3:3d}]")
+            print(f"Index: {obj.id:2d}, RGB32: {hex(obj.rgb32)}, Bytes: [{b0:3d}, {b1:3d}, {b2:3d}, {b3:3d}]")
         print("Farbenindex 2 ist Farbe: ", color_index[2].rgb32)
     print("--- Ende Color Test ---")
 
@@ -359,7 +369,7 @@ def main():
     patterns_file = "cfg_patterns.json"
     objects_file = "cfg_anim_objects.json"
     anim_pattern = load_or_create_patterns(patterns_file)
-    anim_obj = load_or_create_objects(objects_file, anim_pattern)
+    anim_obj = load_or_create_objects(objects_file, anim_pattern, color_index)
     print("Objekte erzeugt")
 
     print("Anzahl der LED-Objekte: ", len(anim_obj))
@@ -386,7 +396,7 @@ def main():
                 anim_obj[anim_number].set_anim_state(False)
             
             print(
-                f"State: {anim_obj[anim_number].run_state:1d} | Pos: {anim_obj[anim_number].position:02d} | Array: {anim_obj[anim_number].do_anim_step()}"
+                f"State: {anim_obj[anim_number].run_state:1d} | Pos: {anim_obj[anim_number].position:02d} | Array: {anim_obj[anim_number].do_anim_update()}"
             )
             time.sleep(anim_delay)
     print("--- Ende Animation Test ---")
@@ -396,6 +406,9 @@ def main():
         test_array = [0, 1, 2, 3, 2, 1, 0]
         fill_array_with_color(test_array, color_index)
         print("Testarray gefüllt:", test_array)
+        for i in range(len(test_array)):
+            print(f"{test_array[i]:06X}", end=" ")
+        print()
         print("--- Ende Fill Array Test ---")
 
 
