@@ -55,13 +55,13 @@ class WS2812ParallelAsync:
 
         # Zwei logische Frames: je 8 Kanaele mit je leds GRB-Woertern.
         self._frames = [
-            [array("I", [0]) * self.leds for _ in range(CHANNELS)],
-            [array("I", [0]) * self.leds for _ in range(CHANNELS)],
+            [array("I", [0] * self.leds) for _ in range(CHANNELS)],
+            [array("I", [0] * self.leds) for _ in range(CHANNELS)],
         ]
         # Zwei Sende-Puffer: 24 Masken/LED, vier Masken je 32-Bit-Wort.
         self._tx = [
-            array("I", [0]) * (self.leds * 6),
-            array("I", [0]) * (self.leds * 6),
+            array("I", [0] * (self.leds * 6)),
+            array("I", [0] * (self.leds * 6)),
         ]
         self._draw = 0
         self._spare_tx = 0
@@ -164,24 +164,14 @@ class WS2812ParallelAsync:
         self._send_tx = None
 
     async def show(self, copy=True):
-        """Aktuellen Zeichenpuffer senden und sofort einen neuen freigeben.
-
-        Die Bitplane-Konvertierung gibt regelmaessig an uasyncio ab. Falls der
-        vorige DMA-Frame noch laeuft, wird dessen Ende erst nach der Konvertierung
-        abgewartet. copy=True kopiert den gesendeten Frame als Ausgangspunkt in
-        den neuen Zeichenpuffer. copy=False ist schneller fuer komplett neu
-        gezeichnete Frames.
-        """
+        """Aktuellen Zeichenpuffer senden und sofort einen neuen freigeben."""
         async with self._lock:
             encode_frame = self._draw
             encode_tx = self._spare_tx
 
-            # Solange der vorige TX-Puffer vom DMA gelesen wird, kann bereits
-            # der andere TX-Puffer aufgebaut werden.
             await self._encode(encode_frame, encode_tx)
             await self.wait()
 
-            # DMA liest nun encode_tx; der andere TX-Puffer wird frei.
             self.dma.config(
                 read=self._tx[encode_tx], write=self.sm,
                 count=len(self._tx[encode_tx]),
@@ -190,7 +180,6 @@ class WS2812ParallelAsync:
             self._send_tx = encode_tx
             self._spare_tx = 1 - encode_tx
 
-            # Auf den zweiten logischen Frame wechseln.
             new_draw = 1 - encode_frame
             if copy:
                 src = self._frames[encode_frame]

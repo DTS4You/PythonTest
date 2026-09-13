@@ -4,7 +4,7 @@ from libs.ws2812_parallel_async import WS2812ParallelAsync
 
 async def main():
     leds = WS2812ParallelAsync(
-        leds=200,
+        leds=20,
         first_pin=2,
         brightness=64,
         sm_id=0,
@@ -12,21 +12,23 @@ async def main():
         reset_us=80,
     )
 
-    try:
+
+    while(True):
         leds.clear()
 
-        leds.fill(0, (255, 0, 0))
-        leds.fill(1, (0, 255, 0))
-        leds.fill(2, (0, 0, 255))
+        for s in range(8):
+            for i in range(20):
+                leds.pixel(s,i,(0,50,0))
+        
+        await leds.show(copy=False)
+
+        asyncio.sleep_ms(20)
+
+        leds.clear()
 
         await leds.show(copy=False)
-        await leds.wait()
-
-        while True:
-            await asyncio.sleep_ms(1000)
-
-    finally:
-        await leds.deinit(blackout=True)
+    
+        asyncio.sleep_ms(20)
 
 
 asyncio.run(main())

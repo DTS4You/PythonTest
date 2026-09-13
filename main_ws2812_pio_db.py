@@ -10,6 +10,7 @@ COLOURS = (
 async def heartbeat():
     # Platzhalter fuer weitere Tasks, Sensoren, Kommunikation usw.
     while True:
+        print("Heartbeat")
         await asyncio.sleep_ms(1000)
 
 async def animation(leds):
@@ -18,11 +19,14 @@ async def animation(leds):
         # copy=False ist optimal, weil dieser Frame komplett neu aufgebaut wird.
         leds.clear()
         for ch in range(8):
-            leds.pixel(ch, (pos + ch * 11) % leds.leds, COLOURS[ch])
+            leds.pixel(ch, pos, COLOURS[ch])
 
         # Kodiert kooperativ, startet DMA und gibt den zweiten Zeichenpuffer frei.
-        await leds.show(copy=False)
-        pos = (pos + 1) % leds.leds
+        await leds.show(copy=True)
+        if pos >= 19:
+            pos = 0
+        else:
+            pos = pos + 1
         await asyncio.sleep_ms(20)
 
 async def main():
@@ -32,7 +36,7 @@ async def main():
         brightness=64,
         sm_id=0,
         yield_every=8,
-        reset_us=80,
+        reset_us=100,
     )
     asyncio.create_task(heartbeat())
     try:
