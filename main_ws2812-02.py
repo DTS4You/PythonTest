@@ -20,7 +20,7 @@ async def animate_leds(leds):
             pos = pos + 1
         else:
             pos = 0
-        await asyncio.sleep_ms(10)
+        await asyncio.sleep_ms(30)
 
 async def main():
     leds = WS2812DirectDMA(leds=200, first_pin=2, brightness=64)
