@@ -1,8 +1,8 @@
 ###############################################################################
 ### V 1.00
 ###############################################################################
-import uasyncio as asyncio              # MicroPython RP2040
-#import asyncio                         # Python 3.11
+#import uasyncio as asyncio              # MicroPython RP2040
+import asyncio                         # Python 3.11
 import libs.modul_config as mycfg
 
 load_modul_hwdebug      = True
@@ -10,7 +10,7 @@ load_modul_anim_obj     = True
 
 def import_module_hwdebug():
     global hwdebug
-    import libs.module_hwdebug as myhwdebug
+    import libs.modul_hwdebug as myhwdebug
     hwdebug = myhwdebug.HWDEBUG()
 
 def import_modul_anim_obj():

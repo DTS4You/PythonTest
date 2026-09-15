@@ -4,7 +4,7 @@
 ###############################################################################
 from machine import Pin
 import uasyncio as asyncio
-import libs.module_hwdebug as myhwdebug
+import libs.modul_hwdebug as myhwdebug
 
 def init_hwdebug():
     global hwdebug

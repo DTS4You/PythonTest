@@ -1,8 +1,8 @@
 ###############################################################################
 ### V 1.00
 ###############################################################################
-import uasyncio as asyncio              # MicroPython RP2040
-#import asyncio                         # Python 3.11
+#import uasyncio as asyncio              # MicroPython RP2040
+import asyncio                         # Python 3.11
 import json
 
 #==============================================================================
@@ -61,7 +61,7 @@ if CONFIG["load_modul_anim_obj"]:
     # 1. Zuerst Patterns laden
     anim_pattern = myanim.load_or_create_patterns(patterns_file)
     # 2. Dann Animationsobjekte laden und mit den loaded Patterns verknüpfen
-    anim_obj = myanim.load_or_create_objects(objects_file, anim_pattern)
+    anim_obj = myanim.load_or_create_objects(objects_file, anim_pattern, color_index)
 else:
     print("[INIT] ## Modul Animationsobjekte wird nicht geladen ##")
 
@@ -106,7 +106,7 @@ async def background_heartbeat():
     blink_state = False
     debug_counter = 0
     while True:
-        hwdebug.write_output(blink_state)      # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED zu blinken
+        #hwdebug.write_output(blink_state)      # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED zu blinken
         blink_state = not blink_state
         print("Blink....Blink")
         #print(myfcode.get_array_from_obj(fcode_array, 1))
@@ -146,9 +146,9 @@ def pre_main():
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        hwdebug.write_output(0)    # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED auszuschalten
+        #hwdebug.write_output(0)    # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED auszuschalten
         print("Programm wurde durch Benutzer abgebrochen.")
-        machine.reset()            # Nur bei MicroPython auf dem RP2040 aktivieren, um den Controller neu zu starten
+        #machine.reset()            # Nur bei MicroPython auf dem RP2040 aktivieren, um den Controller neu zu starten
 #------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
