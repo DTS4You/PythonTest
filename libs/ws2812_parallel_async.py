@@ -6,6 +6,7 @@ from array import array
 from machine import Pin
 import rp2
 import uasyncio as asyncio
+import uctypes
 
 CHANNELS = 8
 
@@ -26,6 +27,68 @@ def ws2812_parallel8():
     mov(pins, x) [4]
     mov(pins, null) [1]
     wrap()
+
+
+# Native ARM-Assembler-Transposition für 8 Kanäle
+@micropython.viper
+def _encode_chunk_viper(
+    ch0: ptr32,
+    ch1: ptr32,
+    ch2: ptr32,
+    ch3: ptr32,
+    ch4: ptr32,
+    ch5: ptr32,
+    ch6: ptr32,
+    ch7: ptr32,
+    tx_ptr: ptr32,
+    start_led: int,
+    end_led: int,
+    out_word_idx: int,
+    ) -> int:
+    oi = out_word_idx
+
+    for led in range(start_led, end_led):
+        # 32-Bit GRB-Werte aller 8 Kanäle laden
+        v0 = int(ch0[led])
+        v1 = int(ch1[led])
+        v2 = int(ch2[led])
+        v3 = int(ch3[led])
+        v4 = int(ch4[led])
+        v5 = int(ch5[led])
+        v6 = int(ch6[led])
+        v7 = int(ch7[led])
+
+        # 24 Bits -> 6 x 32-Bit Worte (je 4 Bitplane-Masken)
+        for w in range(6):
+            word = 0
+            for b in range(4):
+                bit_idx = 23 - (w * 4 + b)
+                test = 1 << bit_idx
+                mask = 0
+
+                if v0 & test:
+                    mask |= 1
+                if v1 & test:
+                    mask |= 2
+                if v2 & test:
+                    mask |= 4
+                if v3 & test:
+                    mask |= 8
+                if v4 & test:
+                    mask |= 16
+                if v5 & test:
+                    mask |= 32
+                if v6 & test:
+                    mask |= 64
+                if v7 & test:
+                    mask |= 128
+
+                word |= mask << (b * 8)
+
+            tx_ptr[oi] = word
+            oi += 1
+
+    return oi
 
 
 class WS2812ParallelAsync:
@@ -130,29 +193,41 @@ class WS2812ParallelAsync:
                 dst[i] = 0
 
     async def _encode(self, frame_index, tx_index):
-        """Frame kooperativ in parallele 8-Bit-Bitplanes umwandeln."""
+        """Frame kooperativ & performant mit Viper in Bitplanes umwandeln."""
         frame = self._frames[frame_index]
         tx = self._tx[tx_index]
-        oi = 0
-        word = 0
-        byte_pos = 0
 
-        for led in range(self.leds):
-            for bit in range(23, -1, -1):
-                test = 1 << bit
-                mask = 0
-                for ch in range(CHANNELS):
-                    if frame[ch][led] & test:
-                        mask |= 1 << ch
-                word |= mask << (byte_pos * 8)
-                byte_pos += 1
-                if byte_pos == 4:
-                    tx[oi] = word
-                    oi += 1
-                    word = 0
-                    byte_pos = 0
-            if (led + 1) % self.yield_every == 0:
-                await asyncio.sleep_ms(0)
+        # Speicheradressen der 8 Kanal-Arrays und des TX-Puffers abfragen
+        ch0 = uctypes.addressof(frame[0])
+        ch1 = uctypes.addressof(frame[1])
+        ch2 = uctypes.addressof(frame[2])
+        ch3 = uctypes.addressof(frame[3])
+        ch4 = uctypes.addressof(frame[4])
+        ch5 = uctypes.addressof(frame[5])
+        ch6 = uctypes.addressof(frame[6])
+        ch7 = uctypes.addressof(frame[7])
+        tx_ptr = uctypes.addressof(tx)
+
+        step = self.yield_every
+        oi = 0
+
+        for start_led in range(0, self.leds, step):
+            end_led = min(start_led + step, self.leds)
+            oi = _encode_chunk_viper(
+                ch0,
+                ch1,
+                ch2,
+                ch3,
+                ch4,
+                ch5,
+                ch6,
+                ch7,
+                tx_ptr,
+                start_led,
+                end_led,
+                oi,
+            )
+            await asyncio.sleep_ms(0)
 
     async def wait(self):
         """Kooperativ warten, bis DMA und WS2812-Latch abgeschlossen sind."""
@@ -210,3 +285,4 @@ class WS2812ParallelAsync:
                 await self.wait()
             self.sm.active(0)
             self.dma.close()
+

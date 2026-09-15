@@ -96,33 +96,6 @@ class WS2812DirectDMA:
 
             buf_ptr[target_word_idx] = current_val
 
-    @micropython.viper
-    def _set_channel_fast(self, buf: object, colors: object, channel: int, count: int):
-        """Schreibt ein gesamtes 32-Bit-Farb-Array in C-Geschwindigkeit in einen Kanal."""
-        buf_ptr = ptr32(buf)
-        col_ptr = ptr32(colors)
-        ch_mask = 1 << channel
-
-        for index in range(count):
-            grb = col_ptr[index]
-            base_word = index * 6
-
-            for bit in range(23, -1, -1):
-                bit_idx = 23 - bit
-                word_offset = bit_idx >> 2
-                byte_pos = bit_idx & 3
-                shift = byte_pos << 3
-
-                target_word_idx = base_word + word_offset
-                current_val = buf_ptr[target_word_idx]
-
-                if (grb >> bit) & 1:
-                    current_val |= (ch_mask << shift)
-                else:
-                    current_val &= ~(ch_mask << shift)
-
-                buf_ptr[target_word_idx] = current_val
-
     def _pack_grb(self, rgb):
         r, g, b = rgb
         br = self.brightness
@@ -136,14 +109,6 @@ class WS2812DirectDMA:
             grb = self._pack_grb(rgb)
             buf = self.tx_buf0 if self.active_write == 0 else self.tx_buf1
             self._set_pixel_fast(buf, channel, index, grb)
-
-    def set_channel(self, channel, color_array):
-        """Übergibt ein Array von fertig berechneten 32-Bit GRB-Werten für einen Kanal."""
-        if not 0 <= channel < CHANNELS:
-            raise IndexError("channel muss 0..7 sein")
-        buf = self.tx_buf0 if self.active_write == 0 else self.tx_buf1
-        count = min(len(color_array), self.leds)
-        self._set_channel_fast(buf, color_array, channel, count)
 
     def fill(self, channel, rgb):
         if 0 <= channel < CHANNELS:
@@ -200,3 +165,4 @@ class WS2812DirectDMA:
         self.clear(show=True)
         self.sm.active(0)
         self.dma.close()
+

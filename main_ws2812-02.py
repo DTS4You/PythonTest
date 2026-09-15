@@ -1,8 +1,9 @@
 #==============================================================================
 # Lauffähige Version 1.00
+# libs.ws2812_parallel
 #==============================================================================
 import asyncio
-from libs.ws2812_parallel import WS2812DirectDMA
+from libs.ws2812_parallel_v1 import WS2812DirectDMA
 
 COLORS = [
     (255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0),
