@@ -1,8 +1,8 @@
 ###############################################################################
 ### V 1.00
 ###############################################################################
-#import uasyncio as asyncio              # MicroPython RP2040
-import asyncio                         # Python 3.11
+import uasyncio as asyncio              # MicroPython RP2040
+#import asyncio                         # Python 3.11
 import json
 
 #==============================================================================
@@ -106,7 +106,7 @@ async def background_heartbeat():
     blink_state = False
     debug_counter = 0
     while True:
-        #hwdebug.write_output(blink_state)      # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED zu blinken
+        hwdebug.write_output(blink_state)      # Nur bei MicroPython auf dem RP2040 aktivieren, um die Status-LED zu blinken
         blink_state = not blink_state
         print("Blink....Blink")
         #print(myfcode.get_array_from_obj(fcode_array, 1))
