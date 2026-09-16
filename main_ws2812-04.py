@@ -1,3 +1,7 @@
+###############################################################################
+# Version 1.00
+# Getestet und i.O.
+###############################################################################
 import uasyncio as asyncio
 from libs.ws2812_parallel_async import WS2812ParallelAsync
 

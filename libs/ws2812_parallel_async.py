@@ -1,7 +1,10 @@
+###############################################################################
+# Version 1.00
+# Getestet und i.O.
 # ws2812_parallel_async.py
 # RP2040 MicroPython: 8 x WS2812 parallel, GPIO2..GPIO9
 # 1 PIO-State-Machine, 1 DMA-Kanal, Double Buffering, uasyncio
-
+###############################################################################
 from array import array
 from machine import Pin
 import rp2
@@ -9,7 +12,6 @@ import uasyncio as asyncio
 import uctypes
 
 CHANNELS = 8
-
 
 @rp2.asm_pio(
     out_init=(rp2.PIO.OUT_LOW,) * 8,
@@ -27,7 +29,6 @@ def ws2812_parallel8():
     mov(pins, x) [4]
     mov(pins, null) [1]
     wrap()
-
 
 # Native ARM-Assembler-Transposition für 8 Kanäle
 @micropython.viper
@@ -89,7 +90,6 @@ def _encode_chunk_viper(
             oi += 1
 
     return oi
-
 
 class WS2812ParallelAsync:
     """8 parallele WS2812-Strips mit zwei Zeichen- und zwei DMA-Puffern.
