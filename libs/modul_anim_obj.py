@@ -40,7 +40,7 @@ class ANIM_OBJ:
 
     def color_fill(self):
         for i, wert in enumerate(self.led_array):
-            print(self.id, i , wert, self.color_index[wert].rgb32)
+            #print(self.id, i , wert, self.color_index[wert].rgb32)
             self.led_array[i] = self.color_index[wert].rgb32
 
     def get_modulo(self):
@@ -346,6 +346,16 @@ def fill_array_with_color(array, color_index):
         array[i] = color_index[array[i]].rgb32
     return array
 
+#-----------------------------------------------------------------------------
+def format_with_sign(wert, width=4):
+    # Vorzeichen und Betrag trennen
+    if wert >= 0:
+        # Bei positiv: '+' erzwingen und mit Nullen auffüllen (Breite minus 1 für das Vorzeichen)
+        return f"+{wert:0{width-1}d}"
+    else:
+        # Bei negativ: '-' setzen und den Betrag mit Nullen auffüllen
+        return f"-{abs(wert):0{width-1}d}"
+
 #------------------------------------------------------------------------------
 # Main-Funktion für Modultests
 #------------------------------------------------------------------------------
@@ -400,9 +410,9 @@ def main():
             if anim_step == anim_test_stop:
                 anim_obj[anim_number].set_anim_state(False)
             
-            print(
-                f"State: {anim_obj[anim_number].run_state:1d} | Pos: {anim_obj[anim_number].position:02d} | Array: {anim_obj[anim_number].do_anim_update()}"
-            )
+            #print(f"State: {anim_obj[anim_number].run_state:1d} | Pos: {anim_obj[anim_number].position:02d} | Array: {anim_obj[anim_number].do_anim_update()}")
+            print(f"State: {anim_obj[anim_number].run_state:1d} | Pos: {format_with_sign(anim_obj[anim_number].position, width=3)} | Array: ", end="")
+            print(", ".join([f"0x{x:06X}" for x in anim_obj[anim_number].do_anim_update()]))
             time.sleep(anim_delay)
     print("--- Ende Animation Test ---")
 
