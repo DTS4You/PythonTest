@@ -363,7 +363,7 @@ def main():
 
     debug_anim  = True
     debug_color = True
-    debug_fill  = True
+    debug_fill  = False
 
     print("--- Start Color Test ---")
     color_file = "cfg_colors.json"
@@ -380,13 +380,16 @@ def main():
         print("Farbenindex 2 ist Farbe: ", color_index[2].rgb32)
     print("--- Ende Color Test ---")
 
+    #--------------------------------------------------------------------------
     print("--- Start Animation Test ---")
-    patterns_file = "cfg_patterns.json"
-    objects_file = "cfg_anim_objects.json"
+    print("-> Config-Dateien setzen")
+    patterns_file = "cfg_patterns.json"                         # Pattern-Datei, die eingelsen wird.
+    objects_file = "cfg_anim_objects.json"                      # Objekt-Datei, die eingelesen wird.
     anim_pattern = load_or_create_patterns(patterns_file)
+    print("--> Patterns erzeugt")
     anim_obj = load_or_create_objects(objects_file, anim_pattern, color_index)
-    print("Objekte erzeugt")
-
+    print("--> Objekte erzeugt")
+    #--------------------------------------------------------------------------
     print("Anzahl der LED-Objekte: ", len(anim_obj))
 
     anim_number     = 0
@@ -396,6 +399,8 @@ def main():
     anim_test_stop  = 40
 
     anim_obj[anim_number].toggle_dir = False
+
+    #--------------------------------------------------------------------------
     if debug_anim:
         print("Pattern Länge:", anim_obj[anim_number].pattern.length)
         print("Array Länge Gesamt:", anim_obj[anim_number].arr_length)
@@ -411,16 +416,18 @@ def main():
                 anim_obj[anim_number].set_anim_state(False)
             
             #print(f"State: {anim_obj[anim_number].run_state:1d} | Pos: {anim_obj[anim_number].position:02d} | Array: {anim_obj[anim_number].do_anim_update()}")
-            print(f"State: {anim_obj[anim_number].run_state:1d} | Pos: {format_with_sign(anim_obj[anim_number].position, width=3)} | Array: ", end="")
+            print(f"Step: {anim_step:2d} | State: {anim_obj[anim_number].run_state:1d} | Pos: {format_with_sign(anim_obj[anim_number].position, width=3)} | Array: ", end="")
             print(", ".join([f"0x{x:06X}" for x in anim_obj[anim_number].do_anim_update()]))
             time.sleep(anim_delay)
     print("--- Ende Animation Test ---")
 
+#--------------------------------------------------------------------------
     if debug_fill:
         print("--- Start Fill Array Test ---")
         test_array = [0, 1, 2, 3, 2, 1, 0]
         fill_array_with_color(test_array, color_index)
         print("Testarray gefüllt:", test_array)
+        print("Array als Hex32 Werte : ", end="")
         for i in range(len(test_array)):
             print(f"{test_array[i]:06X}", end=" ")
         print()
