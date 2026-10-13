@@ -17,9 +17,10 @@ TIME_MAIN_LOOP          = 0.3
 async def background_heartbeat():
     """Simuliert eine parallele Hardware-Aufgabe (z.B. Status-LED blinken)"""
     print("Starte Hintergrund-Task: Status-LED blinken...")
-    
+    debug_counter = 0
     while True:
-        print(f"Loop: Hintergrund-Task läuft...")
+        print(f"Loop: {debug_counter:04d} Hintergrund-Task läuft...")
+        debug_counter += 1
         await asyncio.sleep(TIME_BACKGROUND_TASK)    # Kurze Pause, um die CPU nicht zu blockieren
 
 #------------------------------------------------------------------------------
