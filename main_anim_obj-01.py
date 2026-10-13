@@ -2,6 +2,7 @@
 ### Name    : main_anim_obj-01
 ### Version : 0.99
 ###############################################################################
+import time
 #import uasyncio as asyncio             # MicroPython RP2040
 import asyncio                          # Python 3.x
 
@@ -68,6 +69,48 @@ def anim_setup():
     print("--> Objekte erzeugt")
     #--------------------------------------------------------------------------
     print("Anzahl der LED-Objekte: ", len(anim_obj))
+
+
+    anim_number     = 0
+    anim_steps      = 50
+    anim_delay      = 0.3
+    anim_test_start = 5
+    anim_test_stop  = 40
+
+    anim_obj[anim_number].toggle_dir = False
+
+    #--------------------------------------------------------------------------
+    if debug_anim:
+        print("Pattern Länge:", anim_obj[anim_number].pattern.length)
+        print("Array Länge Gesamt:", anim_obj[anim_number].arr_length)
+        print("Board Port:", anim_obj[anim_number].stripe)
+        print("Startposition:", anim_obj[anim_number].start)
+        print("Objekt Länge:", anim_obj[anim_number].length)
+        print("Toggle Enabled:", anim_obj[anim_number].toggle_en)
+
+        for anim_step in range(anim_steps):
+            if anim_step == anim_test_start:
+                anim_obj[anim_number].set_anim_state(True)
+            if anim_step == anim_test_stop:
+                anim_obj[anim_number].set_anim_state(False)
+            
+            #print(f"State: {anim_obj[anim_number].run_state:1d} | Pos: {anim_obj[anim_number].position:02d} | Array: {anim_obj[anim_number].do_anim_update()}")
+            print(f"Step: {anim_step:2d} | State: {anim_obj[anim_number].run_state:1d} | Pos: {myanim.format_with_sign(anim_obj[anim_number].position, width=3)} | Array: ", end="")
+            print(", ".join([f"0x{x:06X}" for x in anim_obj[anim_number].do_anim_update()]))
+            time.sleep(anim_delay)
+    print("--- Ende Animation Test ---")
+
+    #--------------------------------------------------------------------------
+    if debug_fill:
+        print("--- Start Fill Array Test ---")
+        test_array = [0, 1, 2, 3, 2, 1, 0]
+        myanim.fill_array_with_color(test_array, color_index)
+        print("Testarray gefüllt:", test_array)
+        print("Array als Hex32 Werte : ", end="")
+        for i in range(len(test_array)):
+            print(f"{test_array[i]:06X}", end=" ")
+        print()
+        print("--- Ende Fill Array Test ---")
 
 
 #------------------------------------------------------------------------------
